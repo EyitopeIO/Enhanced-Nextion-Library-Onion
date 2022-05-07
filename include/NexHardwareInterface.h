@@ -10,10 +10,8 @@
 
 #pragma once
 
-#include <WString.h>
-#ifdef ESP8266
-#include <vector>
-#endif
+#include <string>
+
 
 
 /**
@@ -64,7 +62,7 @@ virtual bool recvRetNumber(int32_t *number, size_t timeout) =0;
 * @retval true - success.
 * @retval false - failed. 
 */
-virtual bool recvRetString(String &str, size_t timeout, bool start_flag) =0;
+virtual bool recvRetString(std::string &str, size_t timeout, bool start_flag) =0;
 
 /* Receive string
 *
@@ -83,14 +81,6 @@ virtual bool recvRetString(char *buffer, uint16_t &len, size_t timeout, bool sta
 * parameter command string
 */
 virtual void sendCommand(const char* cmd) =0;
-
-/* Send Raw data to device
-*
-* parameter raw data buffer
-*/
-#ifdef ESP8266
-virtual void sendRawData(const std::vector<uint8_t> &data) =0;
-#endif
 
 /* Send Raw data to device
 *

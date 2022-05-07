@@ -19,10 +19,14 @@
  */
 #pragma once
 
-//#include <Arduino.h>
+#ifndef NEXOBJECT_H
+#define NEXOBJECT_H
+
 //#include "Nextion.h"
-//#include "NexConfig.h"
+#include "NexConfig.h"
 #include "NextionIf.h"
+#include "Onion.h"
+
 
 class Nextion;
 
@@ -128,7 +132,7 @@ protected: /* methods */
     * 
     * @param gName - object page name
     */
-    void getObjGlobalPageName(String &gName);
+    void getObjGlobalPageName(std::string &gName);
 
 private: /* data */ 
     const uint8_t _pid; /* Page ID */
@@ -136,6 +140,5 @@ private: /* data */
     const char* _name; /* An unique name */
     const NexObject* _page; /* page information for global objects nullptr for local */
 };
-/**
- * @}
- */
+
+#endif

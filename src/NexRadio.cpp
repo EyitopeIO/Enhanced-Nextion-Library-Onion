@@ -3,7 +3,7 @@
  *
  * The implementation of class NexRadio. 
  *
- * @author  huang xiaoming (email:<xiaoming.huang@itead.cc>)
+ * @author  huang xiaoming (email:<xiaoming.hppuang@itead.cc>)
  * @date    2016/9/13
  * @author Jyrki Berg 2/17/2019 (https://github.com/jyberg)
  * 
@@ -20,6 +20,9 @@
 #include "NexHardware.h"
 
 
+void NexRadio::attachPush(NexTouchEventCb push, void *ptr)
+{}
+
 NexRadio::NexRadio(Nextion *nextion, uint8_t pid, uint8_t cid, const char *name, const NexObject* page)
     :NexTouch(nextion, pid, cid, name, page)
 {
@@ -27,7 +30,7 @@ NexRadio::NexRadio(Nextion *nextion, uint8_t pid, uint8_t cid, const char *name,
 
 bool NexRadio::getValue(uint32_t *number)
 {
-    String cmd = String("get ");
+    std::string cmd = std::string("get ");
     getObjGlobalPageName(cmd);
     cmd += ".val";
     sendCommand(cmd.c_str());
@@ -37,7 +40,7 @@ bool NexRadio::getValue(uint32_t *number)
 bool NexRadio::setValue(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
@@ -49,7 +52,7 @@ bool NexRadio::setValue(uint32_t number)
 
 bool NexRadio::Get_background_color_bco(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".bco";
@@ -60,7 +63,7 @@ bool NexRadio::Get_background_color_bco(uint32_t *number)
 bool NexRadio::Set_background_color_bco(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
@@ -72,7 +75,7 @@ bool NexRadio::Set_background_color_bco(uint32_t number)
 
 bool NexRadio::Get_font_color_pco(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".pco";
@@ -83,7 +86,7 @@ bool NexRadio::Get_font_color_pco(uint32_t *number)
 bool NexRadio::Set_font_color_pco(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".pco=";

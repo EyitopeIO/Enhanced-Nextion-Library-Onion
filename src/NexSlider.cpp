@@ -26,7 +26,7 @@ NexSlider::NexSlider(Nextion *nextion, uint8_t pid, uint8_t cid, const char *nam
 
 bool NexSlider::getValue(uint32_t *number)
 {
-    String cmd = String("get ");
+    std::string cmd = std::string("get ");
     getObjGlobalPageName(cmd);
     cmd += ".val";
     sendCommand(cmd.c_str());
@@ -36,7 +36,7 @@ bool NexSlider::getValue(uint32_t *number)
 bool NexSlider::setValue(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".val=";
@@ -48,7 +48,7 @@ bool NexSlider::setValue(uint32_t number)
 
 bool NexSlider::Get_background_color_bco(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".bco";
@@ -59,7 +59,7 @@ bool NexSlider::Get_background_color_bco(uint32_t *number)
 bool NexSlider::Set_background_color_bco(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".bco=";
@@ -71,7 +71,7 @@ bool NexSlider::Set_background_color_bco(uint32_t number)
 
 bool NexSlider::Get_font_color_pco(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".pco";
@@ -82,7 +82,7 @@ bool NexSlider::Get_font_color_pco(uint32_t *number)
 bool NexSlider::Set_font_color_pco(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".pco=";
@@ -93,7 +93,7 @@ bool NexSlider::Set_font_color_pco(uint32_t number)
 
 bool NexSlider::Get_pointer_thickness_wid(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".wid";
@@ -104,7 +104,7 @@ bool NexSlider::Get_pointer_thickness_wid(uint32_t *number)
 bool NexSlider::Set_pointer_thickness_wid(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".wid=";
@@ -115,7 +115,7 @@ bool NexSlider::Set_pointer_thickness_wid(uint32_t number)
 
 bool NexSlider::Get_cursor_height_hig(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".hig";
@@ -126,7 +126,7 @@ bool NexSlider::Get_cursor_height_hig(uint32_t *number)
 bool NexSlider::Set_cursor_height_hig(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".hig=";
@@ -137,7 +137,7 @@ bool NexSlider::Set_cursor_height_hig(uint32_t number)
 
 bool NexSlider::getMaxval(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".maxval";
@@ -148,7 +148,7 @@ bool NexSlider::getMaxval(uint32_t *number)
 bool NexSlider::setMaxval(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".maxval=";
@@ -159,7 +159,7 @@ bool NexSlider::setMaxval(uint32_t number)
 
 bool NexSlider::getMinval(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".minval";
@@ -170,7 +170,7 @@ bool NexSlider::getMinval(uint32_t *number)
 bool NexSlider::setMinval(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".minval=";
@@ -181,7 +181,7 @@ bool NexSlider::setMinval(uint32_t number)
 
 bool NexSlider::Get_background_image_pic(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".pic";
@@ -192,7 +192,7 @@ bool NexSlider::Get_background_image_pic(uint32_t *number)
 bool NexSlider::Set_background_image_pic(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".pic=";
@@ -203,7 +203,7 @@ bool NexSlider::Set_background_image_pic(uint32_t number)
 
 bool NexSlider::Get_background_image_picc(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".picc";
@@ -214,7 +214,7 @@ bool NexSlider::Get_background_image_picc(uint32_t *number)
 bool NexSlider::Set_background_image_picc(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".picc=";

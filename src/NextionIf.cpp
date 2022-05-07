@@ -30,7 +30,7 @@ bool NextionIf::recvRetNumber(int32_t *number, size_t timeout)
     return m_nextion->recvRetNumber(number, timeout);
 }
 
-bool NextionIf::recvRetString(String &str, size_t timeout, bool start_flag)
+bool NextionIf::recvRetString(std::string &str, size_t timeout, bool start_flag)
 {
     return m_nextion->recvRetString(str, timeout, start_flag);
 }

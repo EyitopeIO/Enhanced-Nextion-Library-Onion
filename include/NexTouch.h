@@ -21,6 +21,7 @@
 #pragma once
 
 #include "NexObject.h"
+#include <string>
 
 class Nextion;
 

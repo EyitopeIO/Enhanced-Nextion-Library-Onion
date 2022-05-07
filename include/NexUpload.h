@@ -28,7 +28,7 @@
 #else
 #include <SdFat.h>
 #endif
-#include <WString.h>
+#include <string.h>
 #include "NextionIf.h"
 
 

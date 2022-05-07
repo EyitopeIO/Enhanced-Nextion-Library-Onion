@@ -33,7 +33,7 @@ bool NexPage::show(void)
         return false;
     }
     
-    String cmd = String("page ");
+    std::string cmd = std::string("page ");
     cmd += name;
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
@@ -41,7 +41,7 @@ bool NexPage::show(void)
 
 bool NexPage::setVisibleAll(bool visible)
 {
-    String cmd = String("vis ");
+    std::string cmd = std::string("vis ");
     cmd += "255,";
     if(visible)
     {

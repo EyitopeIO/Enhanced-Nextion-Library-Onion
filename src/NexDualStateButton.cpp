@@ -27,7 +27,7 @@ NexDSButton::NexDSButton(Nextion *nextion, uint8_t pid, uint8_t cid, const char 
 
 bool NexDSButton::getValue(uint32_t *number)
 {
-    String cmd = String("get ");
+    std::string cmd = std::string("get ");
     getObjGlobalPageName(cmd);
     cmd += ".val";
     sendCommand(cmd.c_str());
@@ -37,7 +37,7 @@ bool NexDSButton::getValue(uint32_t *number)
 bool NexDSButton::setValue(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".val=";
@@ -46,9 +46,9 @@ bool NexDSButton::setValue(uint32_t number)
     return recvRetCommandFinished();
 }
 
-bool NexDSButton::getText(String &str)
+bool NexDSButton::getText(std::string &str)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".txt";
@@ -59,7 +59,7 @@ bool NexDSButton::getText(String &str)
 
 bool NexDSButton::getText(char *buffer, uint16_t &len)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".txt";
@@ -69,7 +69,7 @@ bool NexDSButton::getText(char *buffer, uint16_t &len)
 
 bool NexDSButton::setText(const char *buffer)
 {
-    String cmd;
+    std::string cmd;
     getObjGlobalPageName(cmd);
     cmd += ".txt=\"";
     cmd += buffer;
@@ -80,7 +80,7 @@ bool NexDSButton::setText(const char *buffer)
 
 bool NexDSButton::Get_state0_color_bco0(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".bco0";
@@ -91,7 +91,7 @@ bool NexDSButton::Get_state0_color_bco0(uint32_t *number)
 bool NexDSButton::Set_state0_color_bco0(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".bco0=";
@@ -102,7 +102,7 @@ bool NexDSButton::Set_state0_color_bco0(uint32_t number)
 
 bool NexDSButton::Get_state1_color_bco1(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".bco1";
@@ -113,7 +113,7 @@ bool NexDSButton::Get_state1_color_bco1(uint32_t *number)
 bool NexDSButton::Set_state1_color_bco1(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".bco1=";
@@ -125,7 +125,7 @@ bool NexDSButton::Set_state1_color_bco1(uint32_t number)
 
 bool NexDSButton::Get_font_color_pco(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".pco";
@@ -136,7 +136,7 @@ bool NexDSButton::Get_font_color_pco(uint32_t *number)
 bool NexDSButton::Set_font_color_pco(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".pco=";
@@ -147,7 +147,7 @@ bool NexDSButton::Set_font_color_pco(uint32_t number)
 
 bool NexDSButton::Get_place_xcen(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".xcen";
@@ -158,7 +158,7 @@ bool NexDSButton::Get_place_xcen(uint32_t *number)
 bool NexDSButton::Set_place_xcen(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".xcen=";
@@ -169,7 +169,7 @@ bool NexDSButton::Set_place_xcen(uint32_t number)
 
 bool NexDSButton::Get_place_ycen(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".ycen";
@@ -180,7 +180,7 @@ bool NexDSButton::Get_place_ycen(uint32_t *number)
 bool NexDSButton::Set_place_ycen(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".ycen=";
@@ -191,7 +191,7 @@ bool NexDSButton::Set_place_ycen(uint32_t number)
 
 bool NexDSButton::getFont(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".font";
@@ -202,7 +202,7 @@ bool NexDSButton::getFont(uint32_t *number)
 bool NexDSButton::setFont(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".font=";
@@ -213,7 +213,7 @@ bool NexDSButton::setFont(uint32_t number)
 
 bool NexDSButton::Get_state0_crop_picc0(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".picc0";
@@ -224,7 +224,7 @@ bool NexDSButton::Get_state0_crop_picc0(uint32_t *number)
 bool NexDSButton::Set_state0_crop_picc0(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".picc0=";
@@ -235,7 +235,7 @@ bool NexDSButton::Set_state0_crop_picc0(uint32_t number)
 
 bool NexDSButton::Get_state1_crop_picc1(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".picc1";
@@ -246,7 +246,7 @@ bool NexDSButton::Get_state1_crop_picc1(uint32_t *number)
 bool NexDSButton::Set_state1_crop_picc1(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".picc1=";
@@ -257,7 +257,7 @@ bool NexDSButton::Set_state1_crop_picc1(uint32_t number)
 
 bool NexDSButton::Get_state0_image_pic0(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".pic0";
@@ -268,7 +268,7 @@ bool NexDSButton::Get_state0_image_pic0(uint32_t *number)
 bool NexDSButton::Set_state0_image_pic0(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".pic0=";
@@ -279,7 +279,7 @@ bool NexDSButton::Set_state0_image_pic0(uint32_t number)
 
 bool NexDSButton::Get_state1_image_pic1(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".pic1";
@@ -290,7 +290,7 @@ bool NexDSButton::Get_state1_image_pic1(uint32_t *number)
 bool NexDSButton::Set_state1_image_pic1(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".pic1=";

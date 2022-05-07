@@ -17,7 +17,6 @@
  * @copyright 2020 Jyrki Berg
  **/
 #include "NexGpio.h"
-
 #include "NexHardware.h"
 
 NexGpio::NexGpio(Nextion *nextion):NextionIf(nextion)
@@ -30,7 +29,7 @@ NexGpio::~NexGpio()
 bool NexGpio::pin_mode(uint32_t port,uint32_t mode,uint32_t control_id)
 {
     char buf;
-    String cmd;
+    std::string cmd;
     
     cmd += "cfgpio ";
     buf = port + '0';
@@ -49,7 +48,7 @@ bool NexGpio::pin_mode(uint32_t port,uint32_t mode,uint32_t control_id)
 
 bool NexGpio::digital_write(uint32_t port,uint32_t value)
 {
-    String cmd;
+    std::string cmd;
     char buf;
     
     cmd += "pio";
@@ -66,7 +65,7 @@ uint32_t NexGpio::digital_read(uint32_t port)
 {
     uint32_t number{0xffffffff};
     char buf;
-    String cmd = String("get ");
+    std::string cmd = std::string("get ");
     cmd += "pio";
     buf = port + '0';
     cmd += buf;
@@ -80,7 +79,7 @@ bool NexGpio::analog_write(uint32_t port,uint32_t value)
 {
     char buf[10] = {0};
     char c;
-    String cmd;
+    std::string cmd;
     utoa(value, buf, 10);
     cmd += "pwm";
     c = port + '0';
@@ -88,7 +87,7 @@ bool NexGpio::analog_write(uint32_t port,uint32_t value)
     cmd += '=';
     cmd += buf;
     
-    Serial.print(cmd);
+    // Serial.print(cmd);
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();   
 }
@@ -96,7 +95,7 @@ bool NexGpio::analog_write(uint32_t port,uint32_t value)
 bool NexGpio::set_pwmfreq(uint32_t value)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(value, buf, 10);
     cmd += "pwmf";
     cmd += '=';
@@ -107,7 +106,7 @@ bool NexGpio::set_pwmfreq(uint32_t value)
 
 bool NexGpio::get_pwmfreq(uint32_t *number)
 {
-    String cmd = String("get pwmf");
+    std::string cmd = std::string("get pwmf");
     sendCommand(cmd.c_str());
     return recvRetNumber(number);
 }

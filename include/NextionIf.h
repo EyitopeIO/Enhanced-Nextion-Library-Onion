@@ -61,7 +61,7 @@ bool recvRetNumber(int32_t *number, size_t timeout = NEX_TIMEOUT_RETURN) final;
 * @retval true - success.
 * @retval false - failed. 
 */
-virtual bool recvRetString(String &str, size_t timeout = NEX_TIMEOUT_RETURN, bool start_flag = true) final;
+virtual bool recvRetString(std::string &str, size_t timeout = NEX_TIMEOUT_RETURN, bool start_flag = true) final;
 
 /* Receive string
 *

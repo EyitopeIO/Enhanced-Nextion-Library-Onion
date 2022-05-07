@@ -18,6 +18,7 @@
  **/
 #include "NexVariable.h"
 #include "NexHardware.h"
+#include <string>
 
 
 NexVariable::NexVariable(Nextion *nextion, uint8_t pid, uint8_t cid, const char *name, const NexObject* page)
@@ -27,7 +28,7 @@ NexVariable::NexVariable(Nextion *nextion, uint8_t pid, uint8_t cid, const char 
 
 bool NexVariable::getValue(int32_t *number)
 {
-    String cmd = String("get ");
+    std::string cmd = std::string("get ");
     getObjGlobalPageName(cmd);
     cmd += ".val";
     sendCommand(cmd.c_str());
@@ -37,7 +38,7 @@ bool NexVariable::getValue(int32_t *number)
 bool NexVariable::setValue(int32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     
     itoa(number, buf, 10);
     getObjGlobalPageName(cmd);
@@ -47,9 +48,9 @@ bool NexVariable::setValue(int32_t number)
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();
 }
-bool NexVariable::getText(String &str)
+bool NexVariable::getText(std::string &str)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".txt";
@@ -59,7 +60,7 @@ bool NexVariable::getText(String &str)
 
 bool NexVariable::getText(char *buffer, uint16_t &len)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".txt";
@@ -69,7 +70,7 @@ bool NexVariable::getText(char *buffer, uint16_t &len)
 
 bool NexVariable::setText(const char *buffer)
 {
-    String cmd;
+    std::string cmd;
     getObjGlobalPageName(cmd);
     cmd += ".txt=\"";
     cmd += buffer;

@@ -19,6 +19,7 @@
 
 #include "NexPicture.h"
 #include "NexHardware.h"
+#include <string>
 
 NexPicture::NexPicture(Nextion *nextion, uint8_t pid, uint8_t cid, const char *name, const NexObject* page)
     :NexTouch(nextion, pid, cid, name, page)
@@ -27,7 +28,7 @@ NexPicture::NexPicture(Nextion *nextion, uint8_t pid, uint8_t cid, const char *n
 
 bool NexPicture::Get_background_image_pic(uint32_t *number)
 {
-    String cmd = String("get ");
+    std::string cmd = std::string("get ");
     getObjGlobalPageName(cmd);
     cmd += ".pic";
     sendCommand(cmd.c_str());
@@ -37,7 +38,7 @@ bool NexPicture::Get_background_image_pic(uint32_t *number)
 bool NexPicture::Set_background_image_pic(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".pic=";
@@ -48,7 +49,7 @@ bool NexPicture::Set_background_image_pic(uint32_t number)
  
 bool NexPicture::getPic(uint32_t *number)
 {
-    String cmd = String("get ");
+    std::string cmd = std::string("get ");
     getObjGlobalPageName(cmd);
     cmd += ".pic";
     sendCommand(cmd.c_str());
@@ -58,7 +59,7 @@ bool NexPicture::getPic(uint32_t *number)
 bool NexPicture::setPic(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".pic=";

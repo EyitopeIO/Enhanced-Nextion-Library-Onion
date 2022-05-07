@@ -27,7 +27,7 @@ NexCrop::NexCrop(Nextion *nextion, uint8_t pid, uint8_t cid, const char *name, c
 
 bool NexCrop::Get_background_crop_picc(uint32_t *number)
 {
-    String cmd = String("get ");
+    std::string cmd = std::string("get ");
     getObjGlobalPageName(cmd);
     cmd += ".picc";
     sendCommand(cmd.c_str());
@@ -37,7 +37,7 @@ bool NexCrop::Get_background_crop_picc(uint32_t *number)
 bool NexCrop::Set_background_crop_picc(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".picc=";
@@ -48,7 +48,7 @@ bool NexCrop::Set_background_crop_picc(uint32_t number)
 
 bool NexCrop::getPic(uint32_t *number)
 {
-    String cmd = String("get ");
+    std::string cmd = std::string("get ");
     getObjGlobalPageName(cmd);
     cmd += ".picc";
     sendCommand(cmd.c_str());
@@ -58,7 +58,7 @@ bool NexCrop::getPic(uint32_t *number)
 bool NexCrop::setPic(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".picc=";

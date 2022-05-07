@@ -49,7 +49,7 @@ const char* NexObject::getObjPageName(void)
     return nullptr;
 }
 
-void NexObject::getObjGlobalPageName(String &gName)
+void NexObject::getObjGlobalPageName(std::string &gName)
 {
     if(_page)
     {
@@ -61,7 +61,7 @@ void NexObject::getObjGlobalPageName(String &gName)
 
 bool NexObject::GetObjectWidth( uint32_t &width)
 {
-    String cmd;
+    std::string cmd;
     cmd = "get ";
     getObjGlobalPageName(cmd);
     cmd += ".w";
@@ -71,23 +71,18 @@ bool NexObject::GetObjectWidth( uint32_t &width)
 
 bool NexObject::GetObjectHeight( uint32_t &height)
 {
-    String cmd;
+    std::string cmd;
     cmd = "get ";
     getObjGlobalPageName(cmd);
-    cmd += ".h";
+    cmd += ".hpp";
     sendCommand(cmd.c_str());
     return recvRetNumber(&height);
 }
 
 void NexObject::printObjInfo(void)
 {
-    dbSerialPrint("[");
-    dbSerialPrint((uint32_t)this);
-    dbSerialPrint(":");
-    dbSerialPrint(_pid);
-    dbSerialPrint(",");
-    dbSerialPrint(_cid);
-    dbSerialPrint(",");
+    std::cout<<"Debug: ["<<(uint32_t)this<<":"<<_pid<<","<<_cid<<","<<std::endl;
+
     if(_page)
     {
         dbSerialPrint(_page->getObjName());
@@ -110,7 +105,7 @@ void NexObject::printObjInfo(void)
 
 bool NexObject::setVisible(bool visible)
 {
-    String cmd = String("vis ");
+    std::string cmd = std::string("vis ");
     cmd += _name;
     cmd += ",";
     if(visible)
@@ -127,7 +122,7 @@ bool NexObject::setVisible(bool visible)
 
 bool NexObject::refresh()
 {
-    String cmd = String("ref ");
+    std::string cmd = std::string("ref ");
     cmd += _name;
     sendCommand(cmd.c_str());
     return recvRetCommandFinished();

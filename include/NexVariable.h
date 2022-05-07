@@ -21,6 +21,7 @@
 #pragma once
 
 #include "NexTouch.h"
+#include <string>
 
 class Nextion;
 class NexObject;
@@ -49,13 +50,13 @@ public: /* methods */
     /*
     * Get text attribute of component. 
     * 
-    * @param str - String storing text returned. 
+    * @param str - std::string storing text returned. 
     *
     * @retval true - success. 
     * @retval false - failed.
     *
     */
-    bool getText(String &str);
+    bool getText(std::string &str);
 
     /**
      * Get text attribute of component.

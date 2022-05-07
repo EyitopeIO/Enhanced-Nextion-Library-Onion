@@ -22,17 +22,14 @@
 
 #pragma once
 
-#include <Arduino.h>
-
+#include <cstdint>
 
 #include "NexConfig.h"
 #include "NexHardwareInterface.h"
+#include "SoftwareSerial.h"
+#include "Onion.h"
 
-#include <HardwareSerial.h>
 
-#ifdef NEX_ENABLE_SW_SERIAL
-#include <SoftwareSerial.h>
-#endif
 
 class NexTouch;
 
@@ -58,349 +55,311 @@ struct nexQueuedEvent
  * Note: NodeMcu board pin numbers not match with Esp8266 pin numbers use NodeMcu Pin number definitions (pins_arduino.h)
  * 
  */
-class Nextion:public NextionInterface
-{
-private: // methods
+class Nextion: public NextionInterface {
+    
+    protected:
+        SoftwareSerial &s_nexSerial;
 
-    static const uint32_t baudRates[]; // Nextion supported bauds
+    private: // methods
 
-    Nextion()=delete;
+        static const uint32_t baudRates[]; // Nextion supported bauds
 
-/**
- * test connection to nextion
- * 
- * @return true if success, false for failure. 
- */
-bool connect();
+        Nextion()=delete;
 
-/**
- * resolve baud
- * 
- * @param baud - resolved baud rate
- * 
- * @return true if success, false for failure. 
- */
-bool findBaud(uint32_t &baud);
+        /**
+         * test connection to nextion
+         * 
+         * @return true if success, false for failure. 
+         */
+        bool connect();
 
-enum serialType {HW, SW, HW_USBCON};
+        /**
+         * resolve baud
+         * 
+         * @param baud - resolved baud rate
+         * 
+         * @return true if success, false for failure. 
+         */
+        bool findBaud(uint32_t &baud);
 
-    const serialType m_nexSerialType; 
-    Stream *m_nexSerial;
-    uint32_t m_baud;
+        enum serialType {HW, SW, HW_USBCON};
 
-    nexQueuedEvent *m_queuedEvents{nullptr};
+        const serialType m_nexSerialType; 
+        Stream *m_nexSerial;
+        uint32_t m_baud;
+        // unsigned char terminator = Ã¿;    // = 255; 
 
-/**
- * Read Queued event in the message queue
- * 
- * @retval none
- */
-void ReadQueuedEvents();
+        nexQueuedEvent *m_queuedEvents{nullptr};
 
-/**
- * Get Queued event from the message queue
- * 
- * @retval nullptr if no queued events to handle
- */
-nexQueuedEvent* GetQueuedEvent();
+        /**
+         * Read Queued event in the message queue
+         * 
+         * @retval none
+         */
+        void ReadQueuedEvents();
 
-public:
+        /**
+         * Get Queued event from the message queue
+         * 
+         * @retval nullptr if no queued events to handle
+         */
+        nexQueuedEvent* GetQueuedEvent();
 
-/**
- * Nextion connection
- * 
- * @param nexSerial - used serial port instance
- */
-Nextion(HardwareSerial &nexSerial);
+    public:
 
-/**
- * Nextion connection instance
- * 
- * Creates Nextion connection instance
- * NodeMcu board pin numbers not match with Esp8266 pin numbers use NodeMcu Pin number definitions (pins_arduino.h)
- *
- * @param nexSerial - used serial port instance
- *
- *  @retval Nextion instace pointer
- */
-static Nextion* GetInstance(HardwareSerial &nexSerial);
+        /**
+         * Nextion connection instance
+         * 
+         * Creates Nextion connection instance
+         * NodeMcu board pin numbers not match with Esp8266 pin numbers use NodeMcu Pin number definitions (pins_arduino.h)
+         *
+         * @param nexSerial - used serial port instance
+         *
+         *  @retval Nextion instace pointer
+         */
 
-#ifdef NEX_ENABLE_SW_SERIAL
-/**
- * Nextion connection
- * 
- * NodeMcu board pin numbers not match with Esp8266 pin numbers use NodeMcu Pin number definitions (pins_arduino.h)
- *
- * @param nexSerial - used serial port instance
- */
-Nextion(SoftwareSerial &nexSerial);
+        /**
+         * Nextion connection
+         * 
+         * NodeMcu board pin numbers not match with Esp8266 pin numbers use NodeMcu Pin number definitions (pins_arduino.h)
+         *
+         * @param nexSerial - used serial port instance
+         */
+        Nextion(SoftwareSerial &nexSerial);
 
-/**
- * Nextion connection instance
- * 
- * Creates Nextion connection instance
- * NodeMcu board pin numbers not match with Esp8266 pin numbers use NodeMcu Pin number definitions (pins_arduino.h)
- *
- * @param nexSerial - used serial port instance
- *
- *  @retval Nextion instace pointer
- */
-static Nextion* GetInstance(SoftwareSerial &nexSerial);
-#endif
+        /**
+         * Nextion connection instance
+         * 
+         * Creates Nextion connection instance
+         * NodeMcu board pin numbers not match with Esp8266 pin numbers use NodeMcu Pin number definitions (pins_arduino.h)
+         *
+         * @param nexSerial - used serial port instance
+         *
+         *  @retval Nextion instace pointer
+         */
+        static Nextion* GetInstance(SoftwareSerial &nexSerial);
 
-#ifdef USBCON
-/**
- * Nextion connection
- * 
- * NodeMcu board pin numbers not match with Esp8266 pin numbers use NodeMcu Pin number definitions (pins_arduino.h)
- *
- * @param nexSerial - used serial port instance
- */
-Nextion(Serial_ &nexSerial);
+        virtual ~Nextion();
 
-/**
- * Nextion connection instance
- * 
- * Creates Nextion connection instance
- * NodeMcu board pin numbers not match with Esp8266 pin numbers use NodeMcu Pin number definitions (pins_arduino.h)
- *
- * @param nexSerial - used serial port instance
- *
- *  @retval Nextion instace pointer
- */
-static Nextion* GetInstance(Serial_ &nexSerial);
-#endif
+        /**
+         * Nextion Startup callback function
+         * Returned when Nextion has started or reset
+         */
+        void (*nextionStartupCallback)();
+        // std::function<void()> nextionStartupCallback;
 
 
-virtual ~Nextion();
+        /**
+         * Current Page ID callback function
+         * The device returns this data after receiving â€œsendmeâ€ instruction)
+         * 
+         *  uint8_t pageId
+         */
+        void (*currentPageIdCallback)(uint8_t);
+        // std::function<void(uint8_t)> currentPageIdCallback;
 
-/**
- * Nextion Startup callback function
- * Returned when Nextion has started or reset
- */
- void (*nextionStartupCallback)();
-// std::function<void()> nextionStartupCallback;
+        /**
+         * Touch Coordinate callback function
+         * When the system variable â€œsendxyâ€ is 1, return this data at TouchEvent occurring
+         * 
+         * uint16_t x
+         * uint16_t y
+         * uint8_t TouchEvent
+         * 
+         * Definition of TouchEvent: Press Event 0x01, Release Event 0X00 
+         */
+        void (*touchCoordinateCallback)(uint16_t,uint16_t,uint8_t);
+        // std::function<void(uint16_t,uint16_t,uint8_t)>  touchCoordinateCallback;
 
+        /**
+         * Touch Event in sleep mode callback function
+         * When the device enters sleep mode, return this data at TouchEvent occurring
+         * 
+         * uint16_t x
+         * uint16_t y
+         * uint8_t TouchEvent
+         * 
+         * Definition of TouchEvent: Press Event 0x01, Release Event 0X00 
+         */
+        void (*touchEventInSleepModeCallback)(uint16_t,uint16_t,uint8_t);
+        // std::function<void(uint16_t,uint16_t,uint8_t)> touchEventInSleepModeCallback;
 
-/**
- * Current Page ID callback function
- * The device returns this data after receiving “sendme” instruction)
- * 
- *  uint8_t pageId
- */
- void (*currentPageIdCallback)(uint8_t);
-// std::function<void(uint8_t)> currentPageIdCallback;
+        /**
+         * Device automatically enters into sleep mode callback function
+         * Only when the device automatically enters into sleep mode will return this data.
+         * If execute serial command â€œsleep = 1â€ to enter into sleep mode, it will not return this data.
+         */
+        void (*automaticSleepCallback)();
+        // std::function<void()> automaticSleepCallback;
 
-/**
- * Touch Coordinate callback function
- * When the system variable “sendxy” is 1, return this data at TouchEvent occurring
- * 
- * uint16_t x
- * uint16_t y
- * uint8_t TouchEvent
- * 
- * Definition of TouchEvent: Press Event 0x01, Release Event 0X00 
- */
- void (*touchCoordinateCallback)(uint16_t,uint16_t,uint8_t);
-// std::function<void(uint16_t,uint16_t,uint8_t)>  touchCoordinateCallback;
+        /**
+         * Device automatically wake up callback function
+         * Only when the device automatically wake up will return this data.
+         * If execute serial command â€œsleep=0â€ to wake up, it will not return this data. 
+         */
+        void (*automaticWakeUpCallback)();
+        // std::function<void()> automaticWakeUpCallback;
 
-/**
- * Touch Event in sleep mode callback function
- * When the device enters sleep mode, return this data at TouchEvent occurring
- * 
- * uint16_t x
- * uint16_t y
- * uint8_t TouchEvent
- * 
- * Definition of TouchEvent: Press Event 0x01, Release Event 0X00 
- */
- void (*touchEventInSleepModeCallback)(uint16_t,uint16_t,uint8_t);
-// std::function<void(uint16_t,uint16_t,uint8_t)> touchEventInSleepModeCallback;
+        /**
+         * Nextion Ready callback function
+         * Returned when Nextion has powered up and is now initialized successfully
+         */
+        void (*nextionReadyCallback)();
+        // std::function<void()> nextionReadyCallback;
 
-/**
- * Device automatically enters into sleep mode callback function
- * Only when the device automatically enters into sleep mode will return this data.
- * If execute serial command “sleep = 1” to enter into sleep mode, it will not return this data.
- */
- void (*automaticSleepCallback)();
-// std::function<void()> automaticSleepCallback;
+        /**
+         * Start SD card upgrade callback function
+         * This data is sent after the device power on and detect SD card, and then enter upgrade interface
+         */
+        void (*startSdUpgradeCallback)();
+        // std::function<void()> startSdUpgradeCallback;
 
-/**
- * Device automatically wake up callback function
- * Only when the device automatically wake up will return this data.
- * If execute serial command “sleep=0” to wake up, it will not return this data. 
- */
- void (*automaticWakeUpCallback)();
-// std::function<void()> automaticWakeUpCallback;
+        /* Receive unsigned number
+        *
+        * @param number - received value
+        * @param timeout - set timeout time.
+        *
+        * @retval true - success.
+        * @retval false - failed. 
+        */
+        bool recvRetNumber(uint32_t *number, size_t timeout = NEX_TIMEOUT_RETURN) final;
 
-/**
- * Nextion Ready callback function
- * Returned when Nextion has powered up and is now initialized successfully
- */
- void (*nextionReadyCallback)();
-// std::function<void()> nextionReadyCallback;
+        /* Receive signed number
+        *
+        * @param number - received value
+        * @param timeout - set timeout time.
+        *
+        * @retval true - success.
+        * @retval false - failed. 
+        */
+        bool recvRetNumber(int32_t *number, size_t timeout = NEX_TIMEOUT_RETURN) final;
 
-/**
- * Start SD card upgrade callback function
- * This data is sent after the device power on and detect SD card, and then enter upgrade interface
- */
- void (*startSdUpgradeCallback)();
-// std::function<void()> startSdUpgradeCallback;
+        /* Receive string
+        *
+        * @param string - received value
+        * @param timeout - set timeout time.
+        * @param start_flag - is str start flag (0x70) expected, default falue true
+        *
+        * @retval true - success.
+        * @retval false - failed. 
+        */
+        bool recvRetString(std::string &str, size_t timeout = NEX_TIMEOUT_RETURN, bool start_flag = true) final;
 
-/* Receive unsigned number
-*
-* @param number - received value
-* @param timeout - set timeout time.
-*
-* @retval true - success.
-* @retval false - failed. 
-*/
-bool recvRetNumber(uint32_t *number, size_t timeout = NEX_TIMEOUT_RETURN) final;
+        /* Receive string
+        *
+        * @param buffer - received value buffer
+        * @param len - value buffer size
+        * @param timeout - set timeout time.
+        * @param start_flag - is str start flag (0x70) expected, default falue true
+        *
+        * @retval true - success.
+        * @retval false - failed. 
+        */
+        bool recvRetString(char *buffer, uint16_t &len, size_t timeout = NEX_TIMEOUT_RETURN, bool start_flag = true) final;
 
-/* Receive signed number
-*
-* @param number - received value
-* @param timeout - set timeout time.
-*
-* @retval true - success.
-* @retval false - failed. 
-*/
-bool recvRetNumber(int32_t *number, size_t timeout = NEX_TIMEOUT_RETURN) final;
+        /* Send Command to device
+        *
+        *  @param cmd - command string
+        */
+        void sendCommand(const char* cmd) final;
 
-/* Receive string
-*
-* @param string - received value
-* @param timeout - set timeout time.
-* @param start_flag - is str start flag (0x70) expected, default falue true
-*
-* @retval true - success.
-* @retval false - failed. 
-*/
-bool recvRetString(String &str, size_t timeout = NEX_TIMEOUT_RETURN, bool start_flag = true) final;
-
-/* Receive string
-*
-* @param buffer - received value buffer
-* @param len - value buffer size
-* @param timeout - set timeout time.
-* @param start_flag - is str start flag (0x70) expected, default falue true
-*
-* @retval true - success.
-* @retval false - failed. 
-*/
-bool recvRetString(char *buffer, uint16_t &len, size_t timeout = NEX_TIMEOUT_RETURN, bool start_flag = true) final;
-
-/* Send Command to device
-*
-*  @param cmd - command string
-*/
-void sendCommand(const char* cmd) final;
-
-/* Send Raw data to device
-*
-*  @param data - raw data buffer
-*/
-#ifdef ESP8266
-void sendRawData(const std::vector<uint8_t> &data) final;
-#endif
-
-/* Send Raw data to device
-*
-* @param buf - raw data buffer poiter
-* @param len - raw data buffer pointer
-*/
-void sendRawData(const uint8_t *buf, uint16_t len) final;
+        /* Send Raw data to device
+        *
+        * @param buf - raw data buffer poiter
+        * @param len - raw data buffer pointer
+        */
+        void sendRawData(const uint8_t *buf, uint16_t len) final;
 
 
-/* Send Raw byte to device
-*
-* @param byte - raw byte
-*/
-void sendRawByte(const uint8_t byte) final;
+        /* Send Raw byte to device
+        *
+        * @param byte - raw byte
+        */
+        void sendRawByte(const uint8_t byte) final;
 
 
-/* read Bytes from device
- * @brief 
- * 
- * @param buffer - receive buffer
- * @param size  - bytes to read
- * @param timeout  timeout ms
- * @return size_t read bytes can be less that size (timeout case) 
- */
-size_t readBytes(uint8_t* buffer, size_t size, size_t timeout = NEX_TIMEOUT_RETURN) final;
+        /* read Bytes from device
+        * @brief 
+        * 
+        * @param buffer - receive buffer
+        * @param size  - bytes to read
+        * @param timeout  timeout ms
+        * @return size_t read bytes can be less that size (timeout case) 
+        */
+        size_t readBytes(uint8_t* buffer, size_t size, size_t timeout = NEX_TIMEOUT_RETURN) final;
 
-/* Receive command
-*
-* @param command - command to be received / checked
-* @param timeout - set timeout time.
-*
-* @retval true - success.
-* @retval false - failed. 
-*/
-bool recvCommand(const uint8_t command, size_t timeout = NEX_TIMEOUT_COMMAND) final;
+        /* Receive command
+        *
+        * @param command - command to be received / checked
+        * @param timeout - set timeout time.
+        *
+        * @retval true - success.
+        * @retval false - failed. 
+        */
+        bool recvCommand(const uint8_t command, size_t timeout = NEX_TIMEOUT_COMMAND) final;
 
-/*
- * Command is executed successfully. 
- *
- * @param timeout - set timeout time.
- *
- * @retval true - success.
- * @retval false - failed. 
- *
- */
-bool recvRetCommandFinished(size_t timeout = NEX_TIMEOUT_COMMAND) final;
+        /*
+        * Command is executed successfully. 
+        *
+        * @param timeout - set timeout time.
+        *
+        * @retval true - success.
+        * @retval false - failed. 
+        *
+        */
+        bool recvRetCommandFinished(size_t timeout = NEX_TIMEOUT_COMMAND) final;
 
-/*
- * Transpared data mode setup successfully 
- *
- * @param timeout - set timeout time.
- *
- * @retval true - success.
- * @retval false - failed. 
- *
- */
-bool RecvTransparendDataModeReady(size_t timeout = NEX_TIMEOUT_TRANSPARENT_DATA_MODE) final;
+        /*
+        * Transpared data mode setup successfully 
+        *
+        * @param timeout - set timeout time.
+        *
+        * @retval true - success.
+        * @retval false - failed. 
+        *
+        */
+        bool RecvTransparendDataModeReady(size_t timeout = NEX_TIMEOUT_TRANSPARENT_DATA_MODE) final;
 
-/*
- * Transpared data mode finished 
- *
- * @param timeout - set timeout time.
- *
- * @retval true - success.
- * @retval false - failed. 
- *
- */
-bool RecvTransparendDataModeFinished(size_t timeout = NEX_TIMEOUT_COMMAND) final;
+        /*
+        * Transpared data mode finished 
+        *
+        * @param timeout - set timeout time.
+        *
+        * @retval true - success.
+        * @retval false - failed. 
+        *
+        */
+        bool RecvTransparendDataModeFinished(size_t timeout = NEX_TIMEOUT_COMMAND) final;
 
-/**
- * Init Nextion connection.
- * 
- * @param baud - baud value: (2400, 4800, 9600, 19200, 31250, 38400, 57600, 115200, 230400, 250000, 256000, 512000, 921600)
- * 
- * @return true if success, false for failure. 
- */
-bool nexInit(const uint32_t baud = NEX_SERIAL_DEFAULT_BAUD);
+        /**
+         * Init Nextion connection.
+         * 
+         * @param baud - baud value: (2400, 4800, 9600, 19200, 31250, 38400, 57600, 115200, 230400, 250000, 256000, 512000, 921600)
+         * 
+         * @return true if success, false for failure. 
+         */
+        bool nexInit(const uint32_t baud = NEX_SERIAL_DEFAULT_BAUD);
 
-/**
- * current baud value
- * 
- * 
- * @return current baud value
- */
-uint32_t GetCurrentBaud() final;
+        /**
+         * current baud value
+         * 
+         * 
+         * @return current baud value
+         */
+        uint32_t GetCurrentBaud() final;
 
-/**
- * Listen touch event and calling callbacks attached before.
- * 
- * Supports push and pop at present. 
- *
- * @param nex_listen_list - index to Nextion Components list. 
- * @return none. 
- *
- * @warning This function must be called repeatedly to response touch events
- *  from Nextion touch panel. Actually, you should place it in your loop function. 
- */
-void nexLoop(NexTouch *nex_listen_list[]);
+        /**
+         * Listen touch event and calling callbacks attached before.
+         * 
+         * Supports push and pop at present. 
+         *
+         * @param nex_listen_list - index to Nextion Components list. 
+         * @return none. 
+         *
+         * @warning This function must be called repeatedly to response touch events
+         *  from Nextion touch panel. Actually, you should place it in your loop function. 
+         */
+        void nexLoop(NexTouch *nex_listen_list[]);
 };
 
 /**

@@ -24,9 +24,9 @@ NexText::NexText(Nextion *nextion, uint8_t pid, uint8_t cid, const char *name, c
 {
 }
 
-bool NexText::getText(String &str)
+bool NexText::getText(std::string &str)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".txt";
@@ -37,7 +37,7 @@ bool NexText::getText(String &str)
 
 bool NexText::getText(char *buffer, uint16_t &len)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".txt";
@@ -47,7 +47,7 @@ bool NexText::getText(char *buffer, uint16_t &len)
 
 bool NexText::setText(const char *buffer)
 {
-    String cmd;
+    std::string cmd;
     getObjGlobalPageName(cmd);
     cmd += ".txt=\"";
     cmd += buffer;
@@ -58,7 +58,7 @@ bool NexText::setText(const char *buffer)
 
 bool NexText::appendText(const char *buffer)
 {
-    String cmd;
+    std::string cmd;
     getObjGlobalPageName(cmd);
     cmd += ".txt+=\"";
     cmd += buffer;
@@ -69,7 +69,7 @@ bool NexText::appendText(const char *buffer)
 
 bool NexText::Get_background_color_bco(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".bco";
@@ -80,7 +80,7 @@ bool NexText::Get_background_color_bco(uint32_t *number)
 bool NexText::Set_background_color_bco(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
@@ -93,7 +93,7 @@ bool NexText::Set_background_color_bco(uint32_t number)
 
 bool NexText::Get_font_color_pco(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".pco";
@@ -104,7 +104,7 @@ bool NexText::Get_font_color_pco(uint32_t *number)
 bool NexText::Set_font_color_pco(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
@@ -116,7 +116,7 @@ bool NexText::Set_font_color_pco(uint32_t number)
 
 bool NexText::Get_place_xcen(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".xcen";
@@ -127,7 +127,7 @@ bool NexText::Get_place_xcen(uint32_t *number)
 bool NexText::Set_place_xcen(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
@@ -139,7 +139,7 @@ bool NexText::Set_place_xcen(uint32_t number)
 
 bool NexText::Get_place_ycen(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".ycen";
@@ -150,7 +150,7 @@ bool NexText::Get_place_ycen(uint32_t *number)
 bool NexText::Set_place_ycen(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
@@ -162,7 +162,7 @@ bool NexText::Set_place_ycen(uint32_t number)
 
 bool NexText::getFont(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".font";
@@ -173,7 +173,7 @@ bool NexText::getFont(uint32_t *number)
 bool NexText::setFont(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
@@ -185,7 +185,7 @@ bool NexText::setFont(uint32_t number)
 
 bool NexText::Get_background_crop_picc(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".picc";
@@ -196,7 +196,7 @@ bool NexText::Get_background_crop_picc(uint32_t *number)
 bool NexText::Set_background_crop_picc(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
@@ -208,7 +208,7 @@ bool NexText::Set_background_crop_picc(uint32_t number)
 
 bool NexText::Get_background_image_pic(uint32_t *number)
 {
-    String cmd = String("get ");
+    std::string cmd = std::string("get ");
     getObjGlobalPageName(cmd);
     cmd += ".pic";
     sendCommand(cmd.c_str());
@@ -218,7 +218,7 @@ bool NexText::Get_background_image_pic(uint32_t *number)
 bool NexText::Set_background_image_pic(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".pic=";

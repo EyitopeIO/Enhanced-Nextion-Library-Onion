@@ -17,10 +17,11 @@
  * @copyright 2020 Jyrki Berg
  **/
 
-
+#include "Onion.h"
 #include "NexHardware.h"
 #include "NexTouch.h"
-
+#include "SoftwareSerial.h"
+#include <algorithm>
 
 #define NEX_RET_EVENT_NEXTION_STARTUP       (0x00)
 #define NEX_RET_EVENT_TOUCH_HEAD            (0x65)
@@ -56,6 +57,9 @@
 #define NEX_RET_VARIABLE_NAME_TOO_LONG              (0x23)
 #define NEX_RET_SERIAL_BUFFER_OVERFLOW              (0x24)
 
+class SoftwareSerial;
+class Stream;
+
 const uint32_t Nextion::baudRates[]{2400, 4800, 9600, 19200, 31250, 38400, 57600, 115200, 230400, 250000, 256000, 512000, 921600};
 
 // queued events and size
@@ -75,6 +79,7 @@ static uint8_t _nextion_queued_events[][2] =
 
 void Nextion::ReadQueuedEvents()
 {
+    // std::cout<<"ReadQueuedEvents"<<std::endl;
     for(int c=m_nexSerial->peek(); c!=-1; c=m_nexSerial->peek())
     {
         int i{0};
@@ -123,61 +128,24 @@ nexQueuedEvent* Nextion::GetQueuedEvent()
     return tmp;
 }
 
-
-
-
-#ifdef NEX_ENABLE_HW_SERIAL
-Nextion::Nextion(HardwareSerial &nexSerial):m_nexSerialType{HW},m_nexSerial{&nexSerial},
-    nextionStartupCallback{nullptr},
-    currentPageIdCallback{nullptr},
-    touchCoordinateCallback{nullptr},
-    touchEventInSleepModeCallback{nullptr},
-    automaticSleepCallback{nullptr},
-    automaticWakeUpCallback{nullptr},
-    nextionReadyCallback{nullptr},
-    startSdUpgradeCallback{nullptr}
-    {}
-
-Nextion* Nextion::GetInstance(HardwareSerial &nexSerial)
+Nextion::Nextion(SoftwareSerial &nexSerial):  m_nexSerialType(SW), s_nexSerial(nexSerial)
 {
-    return new Nextion(nexSerial);
+    m_nexSerial = &nexSerial;
+    s_nexSerial = nexSerial;
+    nextionStartupCallback = nullptr;
+    currentPageIdCallback = nullptr;
+    touchCoordinateCallback = nullptr;
+    touchEventInSleepModeCallback = nullptr;
+    automaticSleepCallback = nullptr;
+    automaticWakeUpCallback = nullptr;
+    nextionReadyCallback = nullptr;
+    startSdUpgradeCallback = nullptr;
 }
-#endif
-
-#ifdef NEX_ENABLE_SW_SERIAL
-Nextion::Nextion(SoftwareSerial &nexSerial):m_nexSerialType{SW},m_nexSerial{&nexSerial},
-    nextionStartupCallback{nullptr},
-    currentPageIdCallback{nullptr},
-    touchCoordinateCallback{nullptr},
-    touchEventInSleepModeCallback{nullptr},
-    automaticSleepCallback{nullptr},
-    automaticWakeUpCallback{nullptr},
-    nextionReadyCallback{nullptr},
-    startSdUpgradeCallback{nullptr}
-{}
-
-#ifdef USBCON
-Nextion::Nextion(Serial_ &nexSerial):m_nexSerialType{HW_USBCON},m_nexSerial{&nexSerial},
-    nextionStartupCallback{nullptr},
-    currentPageIdCallback{nullptr},
-    touchCoordinateCallback{nullptr},
-    touchEventInSleepModeCallback{nullptr},
-    automaticSleepCallback{nullptr},
-    automaticWakeUpCallback{nullptr},
-    nextionReadyCallback{nullptr},
-    startSdUpgradeCallback{nullptr}
-    {}
-Nextion* Nextion::GetInstance(Serial_ &nexSerial)
-{
-    return new Nextion(nexSerial);
-}
-#endif
 
 Nextion* Nextion::GetInstance(SoftwareSerial &nexSerial)
 {
     return new Nextion(nexSerial);
 }
-#endif
 
 Nextion::~Nextion()
 {}
@@ -187,12 +155,11 @@ bool Nextion::connect()
 {
     sendCommand("");
     sendCommand("connect");
-    String resp;
-    recvRetString(resp,NEX_TIMEOUT_RETURN, false);
-    if(resp.indexOf("comok") != -1)
+    std::string resp;
+    recvRetString(resp, NEX_TIMEOUT_RETURN, false);
+    if(resp.find("comok",0) != -std::string::npos)
     {
-        dbSerialPrint("Nextion device details: ");
-        dbSerialPrintln(resp);
+        std::cout<<"Debug: Nextion device details: "<<resp<<std::endl;
         return true;
     }
     return false;
@@ -202,28 +169,14 @@ bool Nextion::findBaud(uint32_t &baud)
 {
     for(uint8_t i = 0; i < (sizeof(baudRates)/sizeof(baudRates[0])); i++)
     {
-        if (m_nexSerialType==HW)
-        {
-            ((HardwareSerial*)m_nexSerial)->begin(baudRates[i]);
-        }
-#ifdef NEX_ENABLE_SW_SERIAL
-        if (m_nexSerialType==SW)
-        {
-            ((SoftwareSerial*)m_nexSerial)->begin(baudRates[i]);
-        }
-#endif 
-#ifdef USBCON
-        if (m_nexSerialType==HW_USBCON)
-        {
-            ((Serial_*)m_nexSerial)->begin(baudRates[i]);
-        }
-#endif
+        //((SoftwareSerial*)m_nexSerial)->begin( static_cast<unsigned int>(baudRates[i]) );
+        dynamic_cast<SoftwareSerial*>(m_nexSerial)->begin( static_cast<unsigned int>(baudRates[i]) );
+
         delay(100);
         if(connect())
         {
             baud = baudRates[i];
-            dbSerialPrint("Nextion found baud: ");
-            dbSerialPrintln(baud);
+            std::cout<<"Debug: Nextion found baud: "<<baud<<std::endl;
             return true;
         }
     }
@@ -270,12 +223,12 @@ __return:
 
     if (ret) 
     {
-        dbSerialPrint("recvRetNumber: ");
-        dbSerialPrintln(*number);
+        std::cout<<"Debug: recvRetNumber:"<<*number<<std::endl;
     }
     else
     {
-        dbSerialPrintln("recvRetNumber err");
+        std::cout<<"Debug: recvRetNumber err:"<<false<<std::endl;
+
     }
     
     return ret;
@@ -321,12 +274,11 @@ __return:
 
     if (ret) 
     {
-        dbSerialPrint("recvRetNumber :");
-        dbSerialPrintln(*number);
+        std::cout<<"Debug: recvRetNumber :"<<*number<<std::endl;
     }
     else
     {
-        dbSerialPrintln("recvRetNumber err");
+        std::cout<<"Debug: recvRetNumber err:"<<false<<std::endl;
     }
     
     return ret;
@@ -343,7 +295,7 @@ __return:
  * @retval false - failed.
  *
  */
-bool Nextion::recvRetString(String &str, size_t timeout, bool start_flag)
+bool Nextion::recvRetString(std::string &str, size_t timeout, bool start_flag)
 {
     str = "";
     bool ret{false};
@@ -351,13 +303,14 @@ bool Nextion::recvRetString(String &str, size_t timeout, bool start_flag)
     uint8_t cnt_0xff = 0;
     uint8_t c = 0;
     ReadQueuedEvents();
-    uint32_t start{millis()};
+    unsigned long start{millis()};
+    std::cout<<"recvRetString: start: "<<start<<std::endl;
 //    size_t avail{(size_t)m_nexSerial->available()};
     while(ret == false && (millis()-start)<timeout)
     {
         while (m_nexSerial->available())
         {
-            c = m_nexSerial->read();
+            c = m_nexSerial->o_read();
             if (str_start_flag)
             {
                 if (0xFF == c)
@@ -380,15 +333,10 @@ bool Nextion::recvRetString(String &str, size_t timeout, bool start_flag)
             }
             yield();
         }
-        delayMicroseconds(20);
+        // delayMicroseconds(20); delay specified in serial port setup i.e. VMIN and VTIME
         yield();
     }
-    dbSerialPrint("recvRetString[");
-    dbSerialPrint(str.length());
-    dbSerialPrint(",");
-    dbSerialPrint(str);
-    dbSerialPrintln("]");
-
+    std::cout<<"Debug: recvRetString["<<str.length()<<","<<str<<"]"<<std::endl;
     return ret;
 }
 
@@ -407,7 +355,7 @@ bool Nextion::recvRetString(String &str, size_t timeout, bool start_flag)
  */
 bool Nextion::recvRetString(char *buffer, uint16_t &len, size_t timeout, bool start_flag)
 {
-    String temp;
+    std::string temp;
     bool ret = recvRetString(temp,timeout, start_flag);
 
     if(ret && len)
@@ -423,41 +371,35 @@ bool Nextion::recvRetString(char *buffer, uint16_t &len, size_t timeout, bool st
  *
  * @param cmd - the string of command.
  */
-void Nextion::sendCommand(const char* cmd)
-{
+void Nextion::sendCommand(const char* cmd) {
+    std::cout<<"SendCommand: "<<cmd<<std::endl;
+
     ReadQueuedEvents();
     // empty in buffer for clean responce
     while (m_nexSerial->available())
     {
-        m_nexSerial->read();
+        m_nexSerial->o_read();
     }
-    
     m_nexSerial->print(cmd);
-    m_nexSerial->write(0xFF);
-    m_nexSerial->write(0xFF);
-    m_nexSerial->write(0xFF);
+    m_nexSerial->o_write(0xFF);
+    m_nexSerial->o_write(0xFF);
+    m_nexSerial->o_write(0xFF);
+    // std::cout<<"SendCommand...DONE"<<std::endl;
 }
-
-#ifdef ESP8266
-void Nextion::sendRawData(const std::vector<uint8_t> &data)
-{
-    m_nexSerial->write(data.data(),data.size());
-}
-#endif
 
 void Nextion::sendRawData(const uint8_t *buf, uint16_t len)
 {
-    m_nexSerial->write(buf, len);
+    m_nexSerial->o_write(buf, len);
 }
 
 void Nextion::sendRawByte(const uint8_t byte)
 {
-    m_nexSerial->write(&byte, 1);
+    m_nexSerial->o_write(&byte, 1);
 }
 
 size_t Nextion::readBytes(uint8_t* buffer, size_t size, size_t timeout)
 {
-    uint32_t start{millis()};
+    unsigned long start{millis()};
     size_t avail{(size_t)m_nexSerial->available()};
     while(size>avail && (millis()-start)<timeout)
     {
@@ -466,10 +408,10 @@ size_t Nextion::readBytes(uint8_t* buffer, size_t size, size_t timeout)
         avail=m_nexSerial->available();
     }
     
-    size_t read=min(size,avail);
+    size_t read=std::min(size,avail);
     for(size_t i{read}; i;--i)
     {
-        *buffer=m_nexSerial->read();
+        *buffer=m_nexSerial->o_read();
         ++buffer;
     }
     return read;
@@ -483,8 +425,7 @@ bool Nextion::recvCommand(const uint8_t command, size_t timeout)
     size_t bytesRead = readBytes((uint8_t *)temp, sizeof(temp), timeout);
     if (sizeof(temp) != bytesRead)
     {
-        dbSerialPrint("recv command timeout: ");
-
+        std::cout<<"Debug: recv command timeout"<<std::endl;
         ret = false;
     }
     else
@@ -499,8 +440,7 @@ bool Nextion::recvCommand(const uint8_t command, size_t timeout)
         }
         else
         {
-            dbSerialPrint("recv command err value: ");
-            dbSerialPrintln(temp[0]);   
+            std::cout<<"Debug: recv command err value: "<<temp[0]<<std::endl;
         }
     }
     return ret;
@@ -511,26 +451,28 @@ bool Nextion::recvRetCommandFinished(size_t timeout)
     bool ret = recvCommand(NEX_RET_CMD_FINISHED_OK, timeout);
     if (ret) 
     {
-        dbSerialPrintln("recvRetCommandFinished ok");
+        std::cout<<"Debug: rrecvRetCommandFinished ok "<<std::endl;
+
     }
     else
     {
-        dbSerialPrintln("recvRetCommandFinished err");
+        std::cout<<"Debug: recvRetCommandFinished err "<<std::endl;
     }
     return ret;
 }
 
 bool Nextion::RecvTransparendDataModeReady(size_t timeout)
 {
-    dbSerialPrintln("RecvTransparendDataModeReady requested");
+    std::cout<<"Debug: RecvTransparendDataModeReady requested"<<std::endl;
+
     bool ret = recvCommand(Nex_RET_TRANSPARENT_DATA_READY, timeout);
     if (ret) 
     {
-        dbSerialPrintln("RecvTransparendDataModeReady ok");
+        std::cout<<"Debug: RecvTransparendDataModeReady ok"<<std::endl;
     }
     else
     {
-        dbSerialPrintln("RecvTransparendDataModeReady err");
+        std::cout<<"Debug: RecvTransparendDataModeReady err"<<std::endl;
     }
     return ret;
 }
@@ -540,76 +482,44 @@ bool Nextion::RecvTransparendDataModeFinished(size_t timeout)
     bool ret = recvCommand(Nex_RET_TRANSPARENT_DATA_FINISHED, timeout);
     if (ret) 
     {
-        dbSerialPrintln("RecvTransparendDataModeFinished ok");
+        std::cout<<"Debug: RecvTransparendDataModeFinished ok"<<std::endl;
     }
     else
     {
-        dbSerialPrintln("RecvTransparendDataModeFinished err");
+        std::cout<<"Debug: RecvTransparendDataModeFinished err"<<std::endl;
     }
     return ret;
 }
 
 bool Nextion::nexInit(const uint32_t baud)
 {
-    m_baud=NEX_SERIAL_DEFAULT_BAUD;
-    if (m_nexSerialType==HW)
+    m_baud=baud;
+    std::cout<<"nexInit...START"<<std::endl;
+    //((SoftwareSerial*)m_nexSerial)->begin(m_baud); // default baud, it is recommended that do not change defaul baud on Nextion, because it can forgot it on re-start
+    dynamic_cast<SoftwareSerial*>(m_nexSerial)->begin(m_baud); // default baud, it is recommended that do not change defaul baud on Nextion, because it can forgot it on re-start
+    
+    if(!connect())
     {
-        // try to connect first with default baud as display may have forgot set baud
-        ((HardwareSerial*)m_nexSerial)->begin(m_baud); // default baud, it is recommended that do not change defaul baud on Nextion, because it can forgot it on re-start
-        if(!connect())
+        if(!findBaud(m_baud))
         {
-            if(!findBaud(m_baud))
-            {
-                ((HardwareSerial*)m_nexSerial)->begin(NEX_SERIAL_DEFAULT_BAUD);
-                return false;
-            }
-        }
-        if(baud!=NEX_SERIAL_DEFAULT_BAUD  || baud!=m_baud)
-        {
-            // change baud to wanted
-            char cmd[14];
-            sprintf(cmd,"baud=%lu",(unsigned long)baud);
-            sendCommand(cmd);
-            delay(100);
-            ((HardwareSerial*)m_nexSerial)->begin(baud);
-            if(!connect())
-            {
-                return false;
-            }
-            m_baud=baud;
+            ((SoftwareSerial*)m_nexSerial)->begin(NEX_SERIAL_DEFAULT_BAUD);
+            return false;
         }
     }
-#ifdef NEX_ENABLE_SW_SERIAL   
-    if (m_nexSerialType==SW)
+    if(baud!=NEX_SERIAL_DEFAULT_BAUD || baud!=m_baud)
     {
-        // try to connect first with default baud as daspaly may have forgot set baud
-        ((SoftwareSerial*)m_nexSerial)->begin(m_baud); // default baud, it is recommended that do not change defaul baud on Nextion, because it can forgot it on re-start
+        // change baud to wanted
+        char cmd[14];
+        sprintf(cmd,"baud=%lu",(unsigned long)baud);
+        sendCommand(cmd);
+        delay(100);
+        ((SoftwareSerial*)m_nexSerial)->begin(baud);
         if(!connect())
         {
-            if(!findBaud(m_baud))
-            {
-                ((SoftwareSerial*)m_nexSerial)->begin(NEX_SERIAL_DEFAULT_BAUD);
-                return false;
-            }
+            return false;
         }
-        if(baud!=NEX_SERIAL_DEFAULT_BAUD || baud!=m_baud)
-        {
-            // change baud to wanted
-            char cmd[14];
-            sprintf(cmd,"baud=%lu",(unsigned long)baud);
-            sendCommand(cmd);
-            delay(100);
-            ((SoftwareSerial*)m_nexSerial)->begin(baud);
-            if(!connect())
-            {
-                return false;
-            }
-            m_baud=baud;
-        }
-    } 
-#endif
-    dbSerialPrint("Used Nextion baud: ");
-    dbSerialPrintln(m_baud);
+        m_baud=baud;
+    }
     sendCommand("bkcmd=3");
     recvRetCommandFinished();
     sendCommand("page 0");
@@ -624,6 +534,8 @@ uint32_t Nextion::GetCurrentBaud()
 
 void Nextion::nexLoop(NexTouch *nex_listen_list[])
 {
+    s_nexSerial.flush();   
+
     ReadQueuedEvents();
     for(nexQueuedEvent* queued = GetQueuedEvent(); queued; queued = GetQueuedEvent())
     {
@@ -726,16 +638,12 @@ void Nextion::nexLoop(NexTouch *nex_listen_list[])
         if(!m_queuedEvents)
         {
             // unnoun data clean buffer.
-            uint8_t c = m_nexSerial->read();
-            dbSerialPrint("Unexpected data received hex: ");
+            uint8_t c = m_nexSerial->o_read();
             while (m_nexSerial->available())
             {
-                dbSerialPrint(c);
-                dbSerialPrint(',');
-                c=m_nexSerial->read();
+                c=m_nexSerial->o_read();
                 yield();
             }
-            dbSerialPrintln(c);
         }
     } 
 }
