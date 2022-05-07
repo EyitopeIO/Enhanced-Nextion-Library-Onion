@@ -17,7 +17,7 @@
 
 /*
  *
- * "NEVER include <bits/termios-baud.hpp> directly; use <termios.hpp> instead."
+ * "NEVER include <bits/termios-baud.h> directly; use <termios.h> instead."
 */
 
 #define __MAX_BAUD B4000000

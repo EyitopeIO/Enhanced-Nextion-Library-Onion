@@ -1,5 +1,5 @@
 /*
-  Print.hpp - Base class that provides print() and println()
+  Print.h - Base class that provides print() and println()
   Copyright (c) 2008 David A. Mellis.  All right reserved.
 
   This library is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
 #include <string>
 #include <cstring>
 
-#include "Printable.hpp"
+#include "Printable.h"
 
 #define DEC 10
 #define HEX 16

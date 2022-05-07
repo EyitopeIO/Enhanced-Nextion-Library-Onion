@@ -25,9 +25,9 @@
 #include <cstring>
 #include <cmath>
 #include <string>
-#include "Onion.hpp"
+#include "Onion.h"
 
-#include "Print.hpp"
+#include "Print.h"
 
 // Public Methods //////////////////////////////////////////////////////////////
 

@@ -3,7 +3,7 @@
 */
 
 
-#include "SoftwareSerial.hpp"
+#include "SoftwareSerial.h"
 #include <fcntl.h> // Contains file controls like O_RDWR
 #include <termios.h> // Contains POSIX terminal control definitions
 #include <iostream>

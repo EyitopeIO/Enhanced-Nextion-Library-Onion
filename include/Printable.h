@@ -1,5 +1,5 @@
 /*
-  Printable.hpp - Interface class that allows printing of complex types
+  Printable.h - Interface class that allows printing of complex types
   Copyright (c) 2011 Adrian McEwen.  All right reserved.
 
   This library is free software; you can redistribute it and/or

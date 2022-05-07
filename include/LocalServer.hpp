@@ -1,5 +1,5 @@
 /**
- * @file LocalServer.hpp
+ * @file LocalServer.h
  * @author Eyitope Adelowo (adeyitope.io@dgmail.com)
  * @brief 
  * @version 0.1

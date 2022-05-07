@@ -2,7 +2,7 @@
 * Eyitope Adelowo (adeyitope.io@gmail.com)
 */
 
-#include "Onion.hpp"
+#include "Onion.h"
 #include <cstdlib>
 #include <bits/stdc++.h>
 #include <unistd.h>

@@ -7,8 +7,8 @@
 #ifndef SOFTWARESERIAL_HPP
 #define SOFTWARESERIAL_HPP
 
-#include "Stream.hpp"
-#include "Onion.hpp"
+#include "Stream.h"
+#include "Onion.h"
 #include <termios.h>
 #include <mutex>
 #include <memory>
