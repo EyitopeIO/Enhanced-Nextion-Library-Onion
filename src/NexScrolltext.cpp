@@ -24,9 +24,9 @@ NexScrolltext::NexScrolltext(Nextion *nextion, uint8_t pid, uint8_t cid, const c
 {
 }
 
-bool NexScrolltext::getText(String &str)
+bool NexScrolltext::getText(std::string &str)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".txt";
@@ -37,7 +37,7 @@ bool NexScrolltext::getText(String &str)
 
 bool NexScrolltext::getText(char *buffer, uint16_t &len)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".txt";
@@ -47,7 +47,7 @@ bool NexScrolltext::getText(char *buffer, uint16_t &len)
 
 bool NexScrolltext::setText(const char *buffer)
 {
-    String cmd;
+    std::string cmd;
     getObjGlobalPageName(cmd);
     cmd += ".txt=\"";
     cmd += buffer;
@@ -58,7 +58,7 @@ bool NexScrolltext::setText(const char *buffer)
 
 bool NexScrolltext::Get_background_color_bco(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".bco";
@@ -69,7 +69,7 @@ bool NexScrolltext::Get_background_color_bco(uint32_t *number)
 bool NexScrolltext::Set_background_color_bco(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".bco=";
@@ -81,7 +81,7 @@ bool NexScrolltext::Set_background_color_bco(uint32_t number)
 
 bool NexScrolltext::Get_font_color_pco(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".pco";
@@ -92,7 +92,7 @@ bool NexScrolltext::Get_font_color_pco(uint32_t *number)
 bool NexScrolltext::Set_font_color_pco(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".pco=";
@@ -103,7 +103,7 @@ bool NexScrolltext::Set_font_color_pco(uint32_t number)
 
 bool NexScrolltext::Get_place_xcen(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".xcen";
@@ -114,7 +114,7 @@ bool NexScrolltext::Get_place_xcen(uint32_t *number)
 bool NexScrolltext::Set_place_xcen(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".xcen=";
@@ -125,7 +125,7 @@ bool NexScrolltext::Set_place_xcen(uint32_t number)
 
 bool NexScrolltext::Get_place_ycen(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".ycen";
@@ -136,7 +136,7 @@ bool NexScrolltext::Get_place_ycen(uint32_t *number)
 bool NexScrolltext::Set_place_ycen(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".ycen=";
@@ -147,7 +147,7 @@ bool NexScrolltext::Set_place_ycen(uint32_t number)
 
 bool NexScrolltext::getFont(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".font";
@@ -158,7 +158,7 @@ bool NexScrolltext::getFont(uint32_t *number)
 bool NexScrolltext::setFont(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".font=";
@@ -169,7 +169,7 @@ bool NexScrolltext::setFont(uint32_t number)
 
 bool NexScrolltext::Get_background_crop_picc(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".picc";
@@ -180,7 +180,7 @@ bool NexScrolltext::Get_background_crop_picc(uint32_t *number)
 bool NexScrolltext::Set_background_crop_picc(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".picc=";
@@ -191,7 +191,7 @@ bool NexScrolltext::Set_background_crop_picc(uint32_t number)
 
 bool NexScrolltext::Get_background_image_pic(uint32_t *number)
 {
-    String cmd = String("get ");
+    std::string cmd = std::string("get ");
     getObjGlobalPageName(cmd);
     cmd += ".pic";
     sendCommand(cmd.c_str());
@@ -201,7 +201,7 @@ bool NexScrolltext::Get_background_image_pic(uint32_t *number)
 bool NexScrolltext::Set_background_image_pic(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".pic=";
@@ -212,7 +212,7 @@ bool NexScrolltext::Set_background_image_pic(uint32_t number)
 
 bool NexScrolltext::Get_scroll_dir(uint32_t *number)
 {
-    String cmd = String("get ");
+    std::string cmd = std::string("get ");
     getObjGlobalPageName(cmd);
     cmd += ".dir";
     sendCommand(cmd.c_str());
@@ -222,7 +222,7 @@ bool NexScrolltext::Get_scroll_dir(uint32_t *number)
 bool NexScrolltext::Set_scroll_dir(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".dir=";
@@ -233,7 +233,7 @@ bool NexScrolltext::Set_scroll_dir(uint32_t number)
 
 bool NexScrolltext::Get_scroll_distance(uint32_t *number)
 {
-    String cmd = String("get ");
+    std::string cmd = std::string("get ");
     getObjGlobalPageName(cmd);
     cmd += ".dis";
     sendCommand(cmd.c_str());
@@ -243,7 +243,7 @@ bool NexScrolltext::Get_scroll_distance(uint32_t *number)
 bool NexScrolltext::Set_scroll_distance(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     
     if (number < 2)
     {
@@ -259,7 +259,7 @@ bool NexScrolltext::Set_scroll_distance(uint32_t number)
 
 bool NexScrolltext::Get_cycle_tim(uint32_t *number)
 {
-    String cmd = String("get ");
+    std::string cmd = std::string("get ");
     getObjGlobalPageName(cmd);
     cmd += ".tim";
     sendCommand(cmd.c_str());
@@ -269,7 +269,7 @@ bool NexScrolltext::Get_cycle_tim(uint32_t *number)
 bool NexScrolltext::Set_cycle_tim(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     if (number < 8)
     {
         number = 8;
@@ -286,7 +286,7 @@ bool NexScrolltext::Set_cycle_tim(uint32_t number)
 bool NexScrolltext::enable(void)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(1, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".en=";
@@ -298,7 +298,7 @@ bool NexScrolltext::enable(void)
 bool NexScrolltext::disable(void)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(0, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".en=";

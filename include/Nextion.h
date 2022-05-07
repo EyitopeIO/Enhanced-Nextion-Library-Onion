@@ -22,7 +22,6 @@
 
 #pragma once
 
-#include "Arduino.h"
 #include "NexConfig.h"
 #include "NexHardwareInterface.h"
 #include "NextionIf.h"

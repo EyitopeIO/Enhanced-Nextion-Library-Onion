@@ -27,7 +27,7 @@ NexProgressBar::NexProgressBar(Nextion *nextion, uint8_t pid, uint8_t cid, const
 
 bool NexProgressBar::getValue(uint32_t *number)
 {
-    String cmd = String("get ");
+    std::string cmd = std::string("get ");
     getObjGlobalPageName(cmd);
     cmd += ".val";
     sendCommand(cmd.c_str());
@@ -37,7 +37,7 @@ bool NexProgressBar::getValue(uint32_t *number)
 bool NexProgressBar::setValue(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;  
+    std::string cmd;  
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".val=";
@@ -50,7 +50,7 @@ bool NexProgressBar::setValue(uint32_t number)
 bool NexProgressBar::set_background_picture(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".bpic=";
@@ -63,7 +63,7 @@ bool NexProgressBar::set_background_picture(uint32_t number)
 bool NexProgressBar::set_foreground_picture(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".ppic=";
@@ -75,7 +75,7 @@ bool NexProgressBar::set_foreground_picture(uint32_t number)
  
 bool NexProgressBar::Get_background_color_bco(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".bco";
@@ -86,7 +86,7 @@ bool NexProgressBar::Get_background_color_bco(uint32_t *number)
 bool NexProgressBar::Set_background_color_bco(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".bco=";
@@ -98,7 +98,7 @@ bool NexProgressBar::Set_background_color_bco(uint32_t number)
 
 bool NexProgressBar::Get_font_color_pco(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".pco";
@@ -109,7 +109,7 @@ bool NexProgressBar::Get_font_color_pco(uint32_t *number)
 bool NexProgressBar::Set_font_color_pco(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".pco=";

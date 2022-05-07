@@ -37,7 +37,7 @@ void NexTimer::detachTimer(void)
 
 bool NexTimer::getCycle(uint32_t *number)
 {
-    String cmd = String("get ");
+    std::string cmd = std::string("get ");
     getObjGlobalPageName(cmd);
     cmd += ".tim";
     sendCommand(cmd.c_str());
@@ -47,7 +47,7 @@ bool NexTimer::getCycle(uint32_t *number)
 bool NexTimer::setCycle(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     if (number < 50)
     {
         number = 50;
@@ -64,7 +64,7 @@ bool NexTimer::setCycle(uint32_t number)
 bool NexTimer::enable(void)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(1, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".en=";
@@ -76,7 +76,7 @@ bool NexTimer::enable(void)
 bool NexTimer::disable(void)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(0, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".en=";
@@ -87,7 +87,7 @@ bool NexTimer::disable(void)
 
 bool NexTimer::Get_cycle_tim(uint32_t *number)
 {
-    String cmd = String("get ");
+    std::string cmd = std::string("get ");
     getObjGlobalPageName(cmd);
     cmd += ".tim";
     sendCommand(cmd.c_str());
@@ -97,7 +97,7 @@ bool NexTimer::Get_cycle_tim(uint32_t *number)
 bool NexTimer::Set_cycle_tim(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     if (number < 8)
     {
         number = 8;

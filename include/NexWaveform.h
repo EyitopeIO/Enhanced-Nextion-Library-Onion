@@ -119,7 +119,7 @@ public: /* methods */
             { 
             char buf[4] = {0};
             utoa(getObjCid(), buf, 10);
-            String cmd;
+            std::string cmd;
             cmd = "addt ";
             cmd += buf;
             cmd += ",";
@@ -180,7 +180,7 @@ public: /* methods */
             { 
             char buf[4] = {0};
             utoa(getObjCid(), buf, 10);
-            String cmd;
+            std::string cmd;
             cmd = "addt ";
             cmd += buf;
             cmd += ",";

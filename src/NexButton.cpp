@@ -28,9 +28,9 @@ NexButton::NexButton(Nextion *nextion, uint8_t pid, uint8_t cid, const char *nam
 {
 }
 
-bool NexButton::getText(String &str)
+bool NexButton::getText(std::string &str)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".txt";
@@ -41,7 +41,7 @@ bool NexButton::getText(String &str)
 
 bool NexButton::getText(char *buffer, uint16_t &len)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".txt";
@@ -51,7 +51,7 @@ bool NexButton::getText(char *buffer, uint16_t &len)
 
 bool NexButton::setText(const char *buffer)
 {
-    String cmd;
+    std::string cmd;
     getObjGlobalPageName(cmd);
     cmd += ".txt=\"";
     cmd += buffer;
@@ -63,7 +63,7 @@ bool NexButton::setText(const char *buffer)
 
 bool NexButton::Get_background_color_bco(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".bco";
@@ -74,7 +74,7 @@ bool NexButton::Get_background_color_bco(uint32_t *number)
 bool NexButton::Set_background_color_bco(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".bco=";
@@ -85,7 +85,7 @@ bool NexButton::Set_background_color_bco(uint32_t number)
 
 bool NexButton::Get_press_background_color_bco2(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".bco2";
@@ -96,7 +96,7 @@ bool NexButton::Get_press_background_color_bco2(uint32_t *number)
 bool NexButton::Set_press_background_color_bco2(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".bco2=";
@@ -107,7 +107,7 @@ bool NexButton::Set_press_background_color_bco2(uint32_t number)
 
 bool NexButton::Get_font_color_pco(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".pco";
@@ -118,7 +118,7 @@ bool NexButton::Get_font_color_pco(uint32_t *number)
 bool NexButton::Set_font_color_pco(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".pco=";
@@ -129,7 +129,7 @@ bool NexButton::Set_font_color_pco(uint32_t number)
 
 bool NexButton::Get_press_font_color_pco2(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".pco2";
@@ -140,7 +140,7 @@ bool NexButton::Get_press_font_color_pco2(uint32_t *number)
 bool NexButton::Set_press_font_color_pco2(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".pco2=";
@@ -151,7 +151,7 @@ bool NexButton::Set_press_font_color_pco2(uint32_t number)
 
 bool NexButton::Get_place_xcen(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".xcen";
@@ -162,7 +162,7 @@ bool NexButton::Get_place_xcen(uint32_t *number)
 bool NexButton::Set_place_xcen(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".xcen=";
@@ -173,7 +173,7 @@ bool NexButton::Set_place_xcen(uint32_t number)
 
 bool NexButton::Get_place_ycen(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".ycen";
@@ -184,7 +184,7 @@ bool NexButton::Get_place_ycen(uint32_t *number)
 bool NexButton::Set_place_ycen(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".ycen=";
@@ -195,7 +195,7 @@ bool NexButton::Set_place_ycen(uint32_t number)
 
 bool NexButton::getFont(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".font";
@@ -206,7 +206,7 @@ bool NexButton::getFont(uint32_t *number)
 bool NexButton::setFont(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".font=";
@@ -217,7 +217,7 @@ bool NexButton::setFont(uint32_t number)
 
 bool NexButton::Get_background_cropi_picc(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".picc";
@@ -228,7 +228,7 @@ bool NexButton::Get_background_cropi_picc(uint32_t *number)
 bool NexButton::Set_background_crop_picc(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".picc=";
@@ -239,7 +239,7 @@ bool NexButton::Set_background_crop_picc(uint32_t number)
 
 bool NexButton::Get_press_background_crop_picc2(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".picc2";
@@ -250,7 +250,7 @@ bool NexButton::Get_press_background_crop_picc2(uint32_t *number)
 bool NexButton::Set_press_background_crop_picc2(uint32_t number)
 {
 	char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".picc2=";
@@ -261,7 +261,7 @@ bool NexButton::Set_press_background_crop_picc2(uint32_t number)
 
 bool NexButton::Get_background_image_pic(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".pic";
@@ -272,7 +272,7 @@ bool NexButton::Get_background_image_pic(uint32_t *number)
 bool NexButton::Set_background_image_pic(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".pic=";
@@ -283,7 +283,7 @@ bool NexButton::Set_background_image_pic(uint32_t number)
 
 bool NexButton::Get_press_background_image_pic2(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".pic2";
@@ -294,7 +294,7 @@ bool NexButton::Get_press_background_image_pic2(uint32_t *number)
 bool NexButton::Set_press_background_image_pic2(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".pic2=";

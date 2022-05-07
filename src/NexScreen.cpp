@@ -27,7 +27,7 @@ NexScreen::NexScreen(Nextion *nextion)
 bool NexScreen::setBacklightLevel(uint32_t number) 
 {
 	char buf[10] = {0};
-    String cmd;    
+    std::string cmd;    
 
 	if (number < 0) 
 		number=0;	
@@ -43,7 +43,7 @@ bool NexScreen::setBacklightLevel(uint32_t number)
 
 bool NexScreen::invokeScreenSleep()
 {
-	String cmd;
+	std::string cmd;
 	cmd += "sleep=1";
 	sendCommand(cmd.c_str());
 	return recvRetCommandFinished();
@@ -51,7 +51,7 @@ bool NexScreen::invokeScreenSleep()
 
 bool NexScreen::invokeScreenWakeup()
 {
-	String cmd;
+	std::string cmd;
 	cmd += "sleep=0";
 	sendCommand(cmd.c_str());
 	return recvRetCommandFinished();
@@ -60,7 +60,7 @@ bool NexScreen::invokeScreenWakeup()
 bool NexScreen::setScreenAutoWakeup(uint32_t number)
 {
 	char buf[10] = {0};
-    String cmd;    
+    std::string cmd;    
 	
 	if (number < 0) 
 		number=0;	
@@ -77,7 +77,7 @@ bool NexScreen::setScreenAutoWakeup(uint32_t number)
 
 bool NexScreen::setScreenTouchTimeout(uint32_t number) {
 	char buf[10] = {0};
-	String cmd;
+	std::string cmd;
 	
 	if (number < 2) 
 		return false;
@@ -95,7 +95,7 @@ bool NexScreen::setScreenTouchTimeout(uint32_t number) {
 
 bool NexScreen::setSleepOnNoSerial(uint32_t number) {
 	char buf[10] = {0};
-	String cmd;
+	std::string cmd;
 	
 	if (number < 2) 
 		return false;
@@ -114,7 +114,7 @@ bool NexScreen::setSleepOnNoSerial(uint32_t number) {
 
 bool NexScreen::setWakeOnSerialData(uint32_t number) {
 	char buf[10] = {0};
-	String cmd;
+	std::string cmd;
 	
 	if (number < 2) 
 		return false;

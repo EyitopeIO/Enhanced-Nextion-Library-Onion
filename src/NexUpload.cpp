@@ -62,11 +62,11 @@ void NexUpload::Reconnect()
 
 bool NexUpload::InitUpload(File  &tftFile)
 {
-    String string = String(""); 
-    String cmd = String("");
+    std::string string = std::string(""); 
+    std::string cmd = std::string("");
     
-    String filesize_str = String(tftFile.size(),10);
-    String baudrate_str = String(GetCurrentBaud(),10);
+    std::string filesize_str = std::string(tftFile.size(),10);
+    std::string baudrate_str = std::string(GetCurrentBaud(),10);
     cmd = "whmi-wri " + filesize_str + "," + baudrate_str + ",0";
     
     sendCommand(cmd.c_str());

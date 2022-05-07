@@ -42,7 +42,7 @@ NexWaveform::NexWaveform(Nextion *nextion, uint8_t pid, uint8_t cid, const char 
 
 bool NexWaveform::Get_background_color_bco(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".bco";
@@ -53,7 +53,7 @@ bool NexWaveform::Get_background_color_bco(uint32_t *number)
 bool NexWaveform::Set_background_color_bco(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
@@ -66,7 +66,7 @@ bool NexWaveform::Set_background_color_bco(uint32_t number)
 
 bool NexWaveform::Get_grid_color_gdc(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".gdc";
@@ -77,7 +77,7 @@ bool NexWaveform::Get_grid_color_gdc(uint32_t *number)
 bool NexWaveform::Set_grid_color_gdc(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
@@ -89,7 +89,7 @@ bool NexWaveform::Set_grid_color_gdc(uint32_t number)
 
 bool NexWaveform::Get_grid_width_gdw(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".gdw";
@@ -100,7 +100,7 @@ bool NexWaveform::Get_grid_width_gdw(uint32_t *number)
 bool NexWaveform::Set_grid_width_gdw(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
@@ -112,7 +112,7 @@ bool NexWaveform::Set_grid_width_gdw(uint32_t number)
 
 bool NexWaveform::Get_grid_height_gdh(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".gdh";
@@ -123,7 +123,7 @@ bool NexWaveform::Get_grid_height_gdh(uint32_t *number)
 bool NexWaveform::Set_grid_height_gdh(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
@@ -138,7 +138,7 @@ bool NexWaveform::Get_channel_color(uint8_t ch, uint32_t *number)
     char buf[4] = {0};
     utoa(ch, buf, 10);
  
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".pco";
@@ -151,7 +151,7 @@ bool NexWaveform::Set_channel_color(uint8_t ch, uint32_t number)
 {
     char buf[10] = {0};
     utoa(ch, buf, 10);
-    String cmd;
+    std::string cmd;
     
     getObjGlobalPageName(cmd);
     cmd += ".pco";
@@ -167,7 +167,7 @@ bool NexWaveform::Set_channel_color(uint8_t ch, uint32_t number)
  {
     char buf[4] = {0};
     utoa(getObjCid(), buf, 10);
-    String cmd;
+    std::string cmd;
     cmd = "cle ";
     cmd += buf;
     cmd += ",";

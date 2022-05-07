@@ -29,7 +29,7 @@ NexCheckbox::NexCheckbox(Nextion *nextion, uint8_t pid, uint8_t cid, const char 
 
 bool NexCheckbox::getValue(uint32_t *number)
 {
-    String cmd = String("get ");
+    std::string cmd = std::string("get ");
     getObjGlobalPageName(cmd);
     cmd += ".val";
     sendCommand(cmd.c_str());
@@ -39,7 +39,7 @@ bool NexCheckbox::getValue(uint32_t *number)
 bool NexCheckbox::setValue(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
@@ -51,7 +51,7 @@ bool NexCheckbox::setValue(uint32_t number)
 
 bool NexCheckbox::Get_background_color_bco(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".bco";
@@ -62,7 +62,7 @@ bool NexCheckbox::Get_background_color_bco(uint32_t *number)
 bool NexCheckbox::Set_background_color_bco(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".bco=";
@@ -73,7 +73,7 @@ bool NexCheckbox::Set_background_color_bco(uint32_t number)
 
 bool NexCheckbox::Get_font_color_pco(uint32_t *number)
 {
-    String cmd;
+    std::string cmd;
     cmd += "get ";
     getObjGlobalPageName(cmd);
     cmd += ".pco";
@@ -84,7 +84,7 @@ bool NexCheckbox::Get_font_color_pco(uint32_t *number)
 bool NexCheckbox::Set_font_color_pco(uint32_t number)
 {
     char buf[10] = {0};
-    String cmd;
+    std::string cmd;
     utoa(number, buf, 10);
     getObjGlobalPageName(cmd);
     cmd += ".pco=";

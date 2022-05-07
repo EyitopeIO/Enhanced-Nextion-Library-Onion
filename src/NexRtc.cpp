@@ -28,7 +28,7 @@ NexRtc::~NexRtc()
 bool NexRtc::write_rtc_time(char *time)
 {
     char year[5],mon[3],day[3],hour[3],min[3],sec[3];
-    String cmd = String("rtc");
+    std::string cmd = std::string("rtc");
     
     if(strlen(time) >= 19)
     {
@@ -103,7 +103,7 @@ bool NexRtc::write_rtc_time(char *time)
 bool NexRtc::write_rtc_time(uint32_t *time)
 {
     char year[5],mon[3],day[3],hour[3],min[3],sec[3];
-    String cmd = String("rtc");
+    std::string cmd = std::string("rtc");
     
      utoa(time[0],year,10);
      utoa(time[1],mon, 10);
@@ -170,7 +170,7 @@ bool NexRtc::write_rtc_time(uint32_t *time)
 
 bool NexRtc::write_rtc_time(char *time_type,uint32_t number)
 {
-    String cmd = String("rtc");
+    std::string cmd = std::string("rtc");
     char buf[10] = {0};
     
     utoa(number, buf, 10);
@@ -213,7 +213,7 @@ bool NexRtc::read_rtc_time(char *time,uint32_t len)
 {
     char time_buf[22] = {"0000/00/00 00:00:00 0"};
     uint32_t year,mon,day,hour,min,sec,week;
-    String cmd;
+    std::string cmd;
     
     cmd = "get rtc0";
     sendCommand(cmd.c_str());
@@ -306,7 +306,7 @@ bool NexRtc::read_rtc_time(char *time,uint32_t len)
 bool NexRtc::read_rtc_time(uint32_t *time,uint32_t len)
 {
     uint32_t time_buf[7] = {0};
-    String cmd;
+    std::string cmd;
     
     cmd = "get rtc0";
     sendCommand(cmd.c_str());
@@ -373,7 +373,7 @@ bool NexRtc::read_rtc_time(uint32_t *time,uint32_t len)
 
 bool NexRtc::read_rtc_time(char *time_type,uint32_t *number)
 {
-    String cmd = String("get rtc");
+    std::string cmd = std::string("get rtc");
     
     if(strstr(time_type,"year"))
     {
