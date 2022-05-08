@@ -1,5 +1,7 @@
 ﻿# Nextion Library for Linux
 
+Jyrki Berg 2/8/2020 (https://github.com/jyberg) Version 1.4.2
+
 ## Introduction
 
 Nextion Arduino library provides an easy-to-use way to manipulate Nextion serial displays.  
