@@ -2,6 +2,11 @@
 
 Eyitope Adelowo 08-MAY-2022
 
+## TODOS
+- Use non-blocking serial interface (i.e. select)
+- Set program start-time outside main
+- Refactor
+
 Jyrki Berg 2/8/2020 (https://github.com/jyberg) Version 1.4.2
 
 ## Introduction
