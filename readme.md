@@ -1,5 +1,7 @@
 ﻿# Nextion Library for Linux
 
+Eyitope Adelowo 08-MAY-2022
+
 Jyrki Berg 2/8/2020 (https://github.com/jyberg) Version 1.4.2
 
 ## Introduction
