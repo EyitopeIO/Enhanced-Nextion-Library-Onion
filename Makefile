@@ -8,8 +8,14 @@ OBJS:= $(patsubst $(SRC)/%.cpp, $(OBJ)/%.o, $(SRCS))
 INC:= ./include
 BIN:= ./bin
 EXE:= $(BIN)/knemesis
-CFLAGS:= -I$(INC) -Wall -w -Wfatal-errors -std=c++11 -pthread # -frtti
-CXXFLAGS:= $(CFLAGS) -std=gnu99
+
+
+ifeq (FLAVOUR_DEBUG,y)
+CFLAGS+=-DFLAVOUR_DEBUG
+endif
+
+CFLAGS+= -I$(INC) -Wall -w -Wfatal-errors -std=c++11 -pthread # -frtti
+CXXFLAGS+= $(CFLAGS) -std=gnu99
 
 .PHONY: all run clean
 
