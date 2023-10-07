@@ -83,7 +83,7 @@ bool NexObject::GetObjectHeight( uint32_t &height)
 
 void NexObject::printObjInfo(void)
 {
-    DEBUG_PRINT("printObjInfo(): " << static_cast<uint64_t>(this) << ":" << _pid << _cid );
+    DEBUG_PRINT("printObjInfo(): " << reinterpret_cast<uint64_t>(this) << ":" << _pid << _cid );
 
     if(_page)
     {
