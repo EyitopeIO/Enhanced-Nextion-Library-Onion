@@ -117,6 +117,6 @@ void pprint(std::__cxx11::basic_string<char>::size_type) { std::cout<<"pprint: D
 /* Signal handler for SIGINT */
 void instant_shutdown(int signum)
 {
-	exit(EXIT_SUCCESS);
+	std::exit(EXIT_SUCCESS);
 }
 
