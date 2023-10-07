@@ -24,6 +24,7 @@
 
 #include "Onion.h"
 #include "Stream.h"
+#include "helpers.h"
 
 
 #define PARSE_TIMEOUT 1000  // default number of milli-seconds to wait
@@ -35,7 +36,7 @@ Stream::Stream()
 
 Stream::~Stream()
 {
-  std::cout << "Destroying Stream...OK" << std::endl;
+  DEBUG_PRINT("Stream::~Stream()");
 }
 
 // protected method to read stream with timeout
