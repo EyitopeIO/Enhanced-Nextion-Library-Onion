@@ -19,13 +19,11 @@ extern unsigned long long GLOBAL_program_start_time;
 
 void delay(unsigned int milliseconds)
 {
-    DEBUG_PRINT("delay(): " << milliseconds << " seconds...");
 	usleep(milliseconds * 1000);
 }
 
 void delayMicroseconds(unsigned int seconds)
 {
-    DEBUG_PRINT("delayMicroseconds():" << seconds << " micro seconds...");
     usleep(seconds);
 }
 
