@@ -11,21 +11,19 @@
 #include <cstring>
 #include <ctime>
 #include <sys/time.h>
+#include "helpers.h"
 
-// ÿ 
+// ÿ
 
 extern unsigned long long GLOBAL_program_start_time;
 
 void delay(unsigned int milliseconds)
 {
-	std::cout << "Waiting " << milliseconds << " seconds..." << std::endl;
-    // sleep(seconds);
 	usleep(milliseconds * 1000);
 }
 
 void delayMicroseconds(unsigned int seconds)
 {
-	std::cout << "Waiting " << seconds << " micro seconds..." << std::endl;
     usleep(seconds);
 }
 
@@ -33,12 +31,10 @@ unsigned long millis()
 {
 	struct timeval tv;
 	gettimeofday(&tv, NULL);
-	unsigned long long res = (static_cast<unsigned long long>(tv.tv_sec)*1000 + static_cast<unsigned long long>(tv.tv_usec)/1000) - GLOBAL_program_start_time;
-	//std::cout << "millis() called: " << res << std::endl;
-	return res;
+	return (static_cast<unsigned long long>(tv.tv_sec)*1000 + static_cast<unsigned long long>(tv.tv_usec)/1000) - GLOBAL_program_start_time;
 }
 
-void yield(void) 
+void yield(void)
 {
 	return;
 }
@@ -78,7 +74,7 @@ char * utoa(unsigned int value, char * str, int radix)
          s[i] = s[j];
          s[j] = c;
      }
-} 
+}
 
 char* itoa(int value, char* str, int radix) {
     static char dig[] =
@@ -119,6 +115,6 @@ void pprint(std::__cxx11::basic_string<char>::size_type) { std::cout<<"pprint: D
 /* Signal handler for SIGINT */
 void instant_shutdown(int signum)
 {
-	exit(EXIT_SUCCESS);
+	std::exit(EXIT_SUCCESS);
 }
 

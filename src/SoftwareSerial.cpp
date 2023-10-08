@@ -4,8 +4,9 @@
 
 
 #include "SoftwareSerial.h"
-#include <fcntl.h> // Contains file controls like O_RDWR
-#include <termios.h> // Contains POSIX terminal control definitions
+#include "helpers.h"
+#include <fcntl.h>
+#include <termios.h>
 #include <iostream>
 
 
@@ -15,18 +16,18 @@ SoftwareSerial::SoftwareSerial(const char* port) : serial_port(port) {
 
 SoftwareSerial::~SoftwareSerial() {
     if (close(o_fd) == 0) {
-        std::cout<<"Destroying SoftwareSerial...OK"<<std::endl;
+        DEBUG_PRINT("SoftwareSerial(): Destroying SoftwareSerial...OK");
     }
     else {
-        std::cout<<"Destroying SoftwareSerial FAILED"<<std::endl;
+        DEBUG_PRINT("SoftwareSerial(): Destroying SoftwareSerial...FAILED");
     }
 }
 
-void SoftwareSerial::begin(unsigned int speed) 
+void SoftwareSerial::begin(unsigned int speed)
 {
     unsigned int speedCode = 0;
     int fd = -1;
-    
+
     switch(speed)
     {
         case 9600:
@@ -40,12 +41,12 @@ void SoftwareSerial::begin(unsigned int speed)
     {
         std::exit(EXIT_FAILURE);
     }
-    std::cout<<"Nextion port: "<<serial_port<<std::endl;
-    std::cout<<"Nextion speed: "<<speed<<std::endl;
+
+    DEBUG_PRINT("SS::begin(): " << serial_port << speed);
     if ((fd = open(serial_port, O_RDWR | O_NOCTTY)) == -1)
     {
-        std::cout<< "begin():Serial port did not open" << std::endl;
-        std::exit(EXIT_FAILURE);  
+        DEBUG_PRINT("SS::begin(): Serial port did not open");
+        std::exit(EXIT_FAILURE);
     }
     if (tcgetattr(fd, &tty) >= 0) {
         /* Set the terminal to be "raw" */
@@ -59,14 +60,16 @@ void SoftwareSerial::begin(unsigned int speed)
         tty.c_cc[VMIN] = 1;     // smallest number of characters that can be read
         cfsetspeed(&tty, speedCode);
         if (tcsetattr(fd, TCSAFLUSH, &tty) == -1) {
-            std::cout<<"begin(): serial attributes not set."<<std::endl;
+            DEBUG_PRINT("SS::begin(): Serial attributes not set");
             std::exit(EXIT_FAILURE);
-        }        
+        }
         this->o_fd = fd;
-        std::cout<<"begin...OK "<<o_fd<<std::endl;
-        return;  
+        DEBUG_PRINT("SS::begin(): Serial port opened");
+        return;
     }
-    else exit(EXIT_FAILURE);
+    else {
+        std::exit(EXIT_FAILURE);
+    }
 }
 
 std::size_t SoftwareSerial::o_write(const uint8_t *buffer, std::size_t size)
@@ -88,7 +91,7 @@ void SoftwareSerial::nxread(void)
     br = read(o_fd, in, sizeof(in));
     if (br > 0)
     {
-        std::cout<< br << " bytes. in: " << in <<std::endl;
+        DEBUG_PRINT("SS::nxread(): " << br << " bytes. in: " << in);
         for (int i = 0; i < br; i++) ouart->push(static_cast<uint8_t>(in[i]));
     }
 }
@@ -96,27 +99,23 @@ void SoftwareSerial::nxread(void)
 int SoftwareSerial::o_read(void)
 {
     int k = ouart->pop();
-    std::cout << "o_read: "<< k << std::endl;
+    DEBUG_PRINT("SS::o_read: "<< k);
     return k;
 }
 
 void SoftwareSerial::flush(void)
 {
-    // static int i = 0;
-    // std::cout << "flush called " << i++ << std::endl;
+    DEBUG_PRINT("SS::flush() called.");
     this->nxread();
 }
 
 int SoftwareSerial::available(void)
 {
-    // size_t n = ouart->size();
-    // {
-    //     std::cout << n << " bytes available for reading." << std::endl;
-    // }
+    DEBUG_PRINT("SS::available(): " << ouart->size() << " bytes available for reading.");
     return ouart->size();
 }
 
-int SoftwareSerial::peek(void) 
+int SoftwareSerial::peek(void)
 {
    return ouart->tail();
 }

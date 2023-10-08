@@ -18,6 +18,8 @@
  **/
 #include "NexObject.h"
 #include "NexHardware.h"
+#include "helpers.h"
+#include <string>
 
 NexObject::NexObject(Nextion *nextion, uint8_t pid, uint8_t cid, const char *name, const NexObject* page):
 NextionIf(nextion),
@@ -81,7 +83,7 @@ bool NexObject::GetObjectHeight( uint32_t &height)
 
 void NexObject::printObjInfo(void)
 {
-    std::cout<<"Debug: ["<<(uint32_t)this<<":"<<_pid<<","<<_cid<<","<<std::endl;
+    DEBUG_PRINT("printObjInfo(): " << reinterpret_cast<uint64_t>(this) << ":" << _pid << _cid );
 
     if(_page)
     {
@@ -91,7 +93,7 @@ void NexObject::printObjInfo(void)
     else
     {
         dbSerialPrint("(null).");
-    }    
+    }
     if(_name)
     {
         dbSerialPrint(_name);

@@ -21,6 +21,7 @@
 #include "NexHardware.h"
 #include "NexTouch.h"
 #include "SoftwareSerial.h"
+#include "helpers.h"
 #include <algorithm>
 
 #define NEX_RET_EVENT_NEXTION_STARTUP       (0x00)
@@ -159,7 +160,7 @@ bool Nextion::connect()
     recvRetString(resp, NEX_TIMEOUT_RETURN, false);
     if(resp.find("comok",0) != -std::string::npos)
     {
-        std::cout<<"Debug: Nextion device details: "<<resp<<std::endl;
+        DEBUG_PRINT("Nextion::connect(): Device details: " << resp);
         return true;
     }
     return false;
@@ -176,7 +177,7 @@ bool Nextion::findBaud(uint32_t &baud)
         if(connect())
         {
             baud = baudRates[i];
-            std::cout<<"Debug: Nextion found baud: "<<baud<<std::endl;
+            DEBUG_PRINT("Nextion::findBaud(): baud: " << baud);
             return true;
         }
     }
@@ -223,12 +224,11 @@ __return:
 
     if (ret) 
     {
-        std::cout<<"Debug: recvRetNumber:"<<*number<<std::endl;
+        DEBUG_PRINT("Nextion::recvRetNumber():" << *number);
     }
     else
     {
-        std::cout<<"Debug: recvRetNumber err:"<<false<<std::endl;
-
+        DEBUG_PRINT("Nextion::recvRetNumber(): err" << false);
     }
     
     return ret;
@@ -274,11 +274,11 @@ __return:
 
     if (ret) 
     {
-        std::cout<<"Debug: recvRetNumber :"<<*number<<std::endl;
+        DEBUG_PRINT("Nextion::recvRetNumber():" << *number);
     }
     else
     {
-        std::cout<<"Debug: recvRetNumber err:"<<false<<std::endl;
+        DEBUG_PRINT("Nextion::recvRetNumber(): err" << false);
     }
     
     return ret;
@@ -304,7 +304,7 @@ bool Nextion::recvRetString(std::string &str, size_t timeout, bool start_flag)
     uint8_t c = 0;
     ReadQueuedEvents();
     unsigned long start{millis()};
-    std::cout<<"recvRetString: start: "<<start<<std::endl;
+    DEBUG_PRINT("Nextion::recvRetString(): start:" << start);
 //    size_t avail{(size_t)m_nexSerial->available()};
     while(ret == false && (millis()-start)<timeout)
     {
@@ -336,7 +336,7 @@ bool Nextion::recvRetString(std::string &str, size_t timeout, bool start_flag)
         // delayMicroseconds(20); delay specified in serial port setup i.e. VMIN and VTIME
         yield();
     }
-    std::cout<<"Debug: recvRetString["<<str.length()<<","<<str<<"]"<<std::endl;
+    DEBUG_PRINT("Nextion::recvRetString()" << str.length() << "," << str);
     return ret;
 }
 
@@ -372,7 +372,7 @@ bool Nextion::recvRetString(char *buffer, uint16_t &len, size_t timeout, bool st
  * @param cmd - the string of command.
  */
 void Nextion::sendCommand(const char* cmd) {
-    std::cout<<"SendCommand: "<<cmd<<std::endl;
+    DEBUG_PRINT("Nextion::sendCommand():" << cmd);
 
     ReadQueuedEvents();
     // empty in buffer for clean responce
@@ -425,7 +425,7 @@ bool Nextion::recvCommand(const uint8_t command, size_t timeout)
     size_t bytesRead = readBytes((uint8_t *)temp, sizeof(temp), timeout);
     if (sizeof(temp) != bytesRead)
     {
-        std::cout<<"Debug: recv command timeout"<<std::endl;
+        DEBUG_PRINT("Nextion::recvCommand(): recv command timeout");
         ret = false;
     }
     else
@@ -440,7 +440,7 @@ bool Nextion::recvCommand(const uint8_t command, size_t timeout)
         }
         else
         {
-            std::cout<<"Debug: recv command err value: "<<temp[0]<<std::endl;
+            DEBUG_PRINT("Nextion::recvCommand(): recv command err");
         }
     }
     return ret;
@@ -451,28 +451,27 @@ bool Nextion::recvRetCommandFinished(size_t timeout)
     bool ret = recvCommand(NEX_RET_CMD_FINISHED_OK, timeout);
     if (ret) 
     {
-        std::cout<<"Debug: rrecvRetCommandFinished ok "<<std::endl;
-
+        DEBUG_PRINT("Nextion::recvRetCommandFinished(): ok");
     }
     else
     {
-        std::cout<<"Debug: recvRetCommandFinished err "<<std::endl;
+        DEBUG_PRINT("Nextion::recvRetCommandFinished(): err");
     }
     return ret;
 }
 
 bool Nextion::RecvTransparendDataModeReady(size_t timeout)
 {
-    std::cout<<"Debug: RecvTransparendDataModeReady requested"<<std::endl;
+    DEBUG_PRINT("Nextion::RecvTransparendDataModeReady() requested");
 
     bool ret = recvCommand(Nex_RET_TRANSPARENT_DATA_READY, timeout);
     if (ret) 
     {
-        std::cout<<"Debug: RecvTransparendDataModeReady ok"<<std::endl;
+        DEBUG_PRINT("Nextion::RecvTransparendDataModeReady(): ok");
     }
     else
     {
-        std::cout<<"Debug: RecvTransparendDataModeReady err"<<std::endl;
+        DEBUG_PRINT("Nextion::RecvTransparendDataModeReady(): err");
     }
     return ret;
 }
@@ -482,11 +481,11 @@ bool Nextion::RecvTransparendDataModeFinished(size_t timeout)
     bool ret = recvCommand(Nex_RET_TRANSPARENT_DATA_FINISHED, timeout);
     if (ret) 
     {
-        std::cout<<"Debug: RecvTransparendDataModeFinished ok"<<std::endl;
+        DEBUG_PRINT("Nextion::RecvTransparendDataModeFinished(): ok");
     }
     else
     {
-        std::cout<<"Debug: RecvTransparendDataModeFinished err"<<std::endl;
+        DEBUG_PRINT("Nextion::RecvTransparendDataModeFinished(): err");
     }
     return ret;
 }
@@ -494,7 +493,7 @@ bool Nextion::RecvTransparendDataModeFinished(size_t timeout)
 bool Nextion::nexInit(const uint32_t baud)
 {
     m_baud=baud;
-    std::cout<<"nexInit...START"<<std::endl;
+    DEBUG_PRINT("Nextion::nexInit(): START");
     //((SoftwareSerial*)m_nexSerial)->begin(m_baud); // default baud, it is recommended that do not change defaul baud on Nextion, because it can forgot it on re-start
     dynamic_cast<SoftwareSerial*>(m_nexSerial)->begin(m_baud); // default baud, it is recommended that do not change defaul baud on Nextion, because it can forgot it on re-start
     
