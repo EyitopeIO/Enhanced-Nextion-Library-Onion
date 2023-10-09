@@ -42,7 +42,7 @@ void SoftwareSerial::begin(unsigned int speed)
         std::exit(EXIT_FAILURE);
     }
 
-    DEBUG_PRINT("SS::begin(): " << serial_port << speed);
+    DEBUG_PRINT("SS::begin(): " << serial_port << " " << speed);
     if ((fd = open(serial_port, O_RDWR | O_NOCTTY)) == -1)
     {
         DEBUG_PRINT("SS::begin(): Serial port did not open");
@@ -88,7 +88,14 @@ void SoftwareSerial::nxread(void)
     static char in[16];
     static ssize_t br;
     br = read(o_fd, in, sizeof(in));
-    DEBUG_PRINT("SS::nxread(): " << br << " bytes. in: " << in);
+    DEBUG_PRINT("SS::nxread(): " << br);
+#ifdef FLAVOUR_DEBUG
+    for (int h = 0; h < br; h++)
+    {
+        std::cerr << static_cast<int32_t>(in[h]) << " ";
+    }
+    std::cerr << std::endl;
+#endif
     if (br > 0)
     {
         for (int i = 0; i < br; i++)
