@@ -1,6 +1,12 @@
-/*
-* Eyitope Adelowo (adeyitope.io@gmail.com)
-*/
+/**
+ * @file SoftwareSerial.cpp
+ *
+ * SoftwareSerial implementation for the Onion Omega2 (Linux)
+ *
+ * @author  Eyitope Adelowo (email:<adeyitope.io@gmail.com>)
+ * @date    9/OCT/2023
+ * 
+ */
 
 
 #include "SoftwareSerial.h"

@@ -1,8 +1,12 @@
-/*
-* Eyitope Adelowo (adeyitope.io@gmail.com)
-*/
-
-#pragma once
+/**
+ * @file SoftwareSerial.h
+ *
+ * Definitions for SoftwareSerial.cpp
+ *
+ * @author  Eyitope Adelowo (email:<adeyitope.io@gmail.com>)
+ * @date    9/OCT/2023
+ * 
+ */
 
 #ifndef SOFTWARESERIAL_HPP
 #define SOFTWARESERIAL_HPP

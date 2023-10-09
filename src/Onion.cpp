@@ -1,6 +1,12 @@
-/*
-* Eyitope Adelowo (adeyitope.io@gmail.com)
-*/
+/**
+ * @file Onion.cpp
+ *
+ * Definitions for Onion.h
+ *
+ * @author  Eyitope Adelowo (email:<adeyitope.io@gmail.com>)
+ * @date    9/OCT/2023
+ * 
+ */
 
 #include "Onion.h"
 #include "helpers.h"

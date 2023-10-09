@@ -1,9 +1,14 @@
-/*
-* Eyitope Adelowo (adeyitope.io@gmail.com)
-*/
-
-#pragma once
-
+/**
+ * @file Onion.h
+ *
+ * Arduino-like functions and other definitions for the Linux
+ *
+ * @author  Eyitope Adelowo (email:<adeyitope.io@gmail.com>)
+ * @date    9/OCT/2023
+ * 
+ */
+#ifndef ONION_H
+#define ONION_H
 
 #include <unistd.h>
 #include <cstdlib>
@@ -14,9 +19,7 @@
 #include <string>
 #include <iostream>
 
-
 /*
- *
  * "NEVER include <bits/termios-baud.h> directly; use <termios.h> instead."
 */
 
@@ -56,6 +59,4 @@ void pprint(uint32_t& stuff);
 void pprint(int stuff);
 void pprint(double stuff);
 
-
-
-
+#endif

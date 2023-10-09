@@ -1,3 +1,14 @@
+/**
+ * @file KnemesisAssets.cpp
+ *
+ * Logic for assets managed by the knemesis 
+ *
+ * @author  Eyitope Adelowo (email:<adeyitope.io@gmail.com>)
+ * @date    9/OCT/2023
+ * 
+ */
+
+
 #include "Nextion.h"
 #include "helpers.h"
 #include "KnemesisAssets.h"
