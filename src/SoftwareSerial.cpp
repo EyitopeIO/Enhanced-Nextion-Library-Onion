@@ -18,6 +18,7 @@
 
 SoftwareSerial::SoftwareSerial(const char* port) : serial_port(port) {
     ouart = new SoftUART_Q<uint8_t>(ONION_UART_SIZE);
+    this->o_fd = -1;
 }
 
 SoftwareSerial::~SoftwareSerial() {
@@ -32,7 +33,12 @@ SoftwareSerial::~SoftwareSerial() {
 void SoftwareSerial::begin(unsigned int speed)
 {
     unsigned int speedCode = 0;
-    int fd = -1;
+
+    if (this->o_fd != -1)
+    {
+        DEBUG_PRINT("SS::begin(): Closing existing fd: " << o_fd);
+        close(o_fd);
+    }
 
     switch(speed)
     {
@@ -49,12 +55,12 @@ void SoftwareSerial::begin(unsigned int speed)
     }
 
     DEBUG_PRINT("SS::begin(): " << serial_port << " " << speed);
-    if ((fd = open(serial_port, O_RDWR | O_NOCTTY)) == -1)
+    if ((o_fd = open(serial_port, O_RDWR | O_NOCTTY)) == -1)
     {
         DEBUG_PRINT("SS::begin(): Serial port did not open");
         std::exit(EXIT_FAILURE);
     }
-    if (tcgetattr(fd, &tty) >= 0) {
+    if (tcgetattr(o_fd, &tty) >= 0) {
         /* Set the terminal to be "raw" */
         tty.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR | IGNCR | ICRNL | IXON);
         tty.c_oflag &= ~OPOST;
@@ -65,11 +71,10 @@ void SoftwareSerial::begin(unsigned int speed)
         tty.c_cc[VTIME] = 0;    // i.e. 1 == 100ms, 2 == 200ms,...10 == 1000ms
         tty.c_cc[VMIN] = 1;     // smallest number of characters that can be read
         cfsetspeed(&tty, speedCode);
-        if (tcsetattr(fd, TCSAFLUSH, &tty) == -1) {
+        if (tcsetattr(o_fd, TCSAFLUSH, &tty) == -1) {
             DEBUG_PRINT("SS::begin(): Serial attributes not set");
             std::exit(EXIT_FAILURE);
         }
-        this->o_fd = fd;
         DEBUG_PRINT("SS::begin(): Serial port opened");
         return;
     }
