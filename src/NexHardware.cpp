@@ -172,7 +172,7 @@ bool Nextion::findBaud(uint32_t &baud)
     {
         //((SoftwareSerial*)m_nexSerial)->begin( static_cast<unsigned int>(baudRates[i]) );
         dynamic_cast<SoftwareSerial*>(m_nexSerial)->begin( static_cast<unsigned int>(baudRates[i]) );
-
+        DEBUG_PRINT("Nextion::findBaud(): trying baud: " << baudRates[i]);
         delay(100);
         if(connect())
         {
@@ -304,7 +304,6 @@ bool Nextion::recvRetString(std::string &str, size_t timeout, bool start_flag)
     uint8_t c = 0;
     ReadQueuedEvents();
     unsigned long start{millis()};
-    DEBUG_PRINT("Nextion::recvRetString(): start:" << start);
 //    size_t avail{(size_t)m_nexSerial->available()};
     while(ret == false && (millis()-start)<timeout)
     {
@@ -508,6 +507,7 @@ bool Nextion::nexInit(const uint32_t baud)
     if(baud!=NEX_SERIAL_DEFAULT_BAUD || baud!=m_baud)
     {
         // change baud to wanted
+        DEBUG_PRINT("Nextion::nexInit(): changing baudrate to " << baud);
         char cmd[14];
         sprintf(cmd,"baud=%lu",(unsigned long)baud);
         sendCommand(cmd);
@@ -515,6 +515,7 @@ bool Nextion::nexInit(const uint32_t baud)
         ((SoftwareSerial*)m_nexSerial)->begin(baud);
         if(!connect())
         {
+            DEBUG_PRINT("Nextion::nexInit(): could not connect after changing baudrate");
             return false;
         }
         m_baud=baud;

@@ -53,8 +53,6 @@ void SoftwareSerial::begin(unsigned int speed)
     {
         std::exit(EXIT_FAILURE);
     }
-
-    DEBUG_PRINT("SS::begin(): " << serial_port << " " << speed);
     if ((o_fd = open(serial_port, O_RDWR | O_NOCTTY)) == -1)
     {
         DEBUG_PRINT("SS::begin(): Serial port did not open");
@@ -75,7 +73,7 @@ void SoftwareSerial::begin(unsigned int speed)
             DEBUG_PRINT("SS::begin(): Serial attributes not set");
             std::exit(EXIT_FAILURE);
         }
-        DEBUG_PRINT("SS::begin(): Serial port opened");
+        DEBUG_PRINT("SS::begin(): Serial port opened: " << serial_port << " " << speed);
         return;
     }
     else {

@@ -35,7 +35,7 @@
 #endif
 
 #ifndef DISPLAY_UART_BAUD
-#define DISPLAY_UART_BAUD 115200
+#define DISPLAY_UART_BAUD 9600
 #endif
 
 #define dbSerialPrintln(a)  pprint(a)
