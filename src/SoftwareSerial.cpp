@@ -42,7 +42,7 @@ void SoftwareSerial::begin(unsigned int speed)
         std::exit(EXIT_FAILURE);
     }
 
-    DEBUG_PRINT("SS::begin(): " << serial_port << speed);
+    DEBUG_PRINT("SS::begin(): " << serial_port << " " << speed);
     if ((fd = open(serial_port, O_RDWR | O_NOCTTY)) == -1)
     {
         DEBUG_PRINT("SS::begin(): Serial port did not open");
@@ -87,12 +87,19 @@ void SoftwareSerial::nxread(void)
     // Onion Serial port is 16 bytes
     static char in[16];
     static ssize_t br;
-
     br = read(o_fd, in, sizeof(in));
+    DEBUG_PRINT("SS::nxread(): " << br);
+#ifdef FLAVOUR_DEBUG
+    for (int h = 0; h < br; h++)
+    {
+        std::cerr << static_cast<int32_t>(in[h]) << " ";
+    }
+    std::cerr << std::endl;
+#endif
     if (br > 0)
     {
-        DEBUG_PRINT("SS::nxread(): " << br << " bytes. in: " << in);
-        for (int i = 0; i < br; i++) ouart->push(static_cast<uint8_t>(in[i]));
+        for (int i = 0; i < br; i++)
+            ouart->push(static_cast<uint8_t>(in[i]));
     }
 }
 
@@ -111,7 +118,6 @@ void SoftwareSerial::flush(void)
 
 int SoftwareSerial::available(void)
 {
-    DEBUG_PRINT("SS::available(): " << ouart->size() << " bytes available for reading.");
     return ouart->size();
 }
 

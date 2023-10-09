@@ -57,6 +57,10 @@ void NexTouch::push(void)
 {
     if (__cb_push)
     {
+#ifdef FLAVOUR_DEBUG
+        if (this->getObjName())
+            std::cerr << "NexTouch::push() called for" << this->getObjName() << std::endl;
+#endif
         __cb_push(__cbpush_ptr);
     }
 }
@@ -65,6 +69,10 @@ void NexTouch::pop(void)
 {
     if (__cb_pop)
     {
+#ifdef FLAVOUR_DEBUG
+        if (this->getObjName())
+            std::cerr << "NexTouch::pop() called for" << this->getObjName() << std::endl;
+#endif
         __cb_pop(__cbpop_ptr);
     }
 }

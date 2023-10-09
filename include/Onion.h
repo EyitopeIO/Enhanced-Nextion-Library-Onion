@@ -27,6 +27,14 @@
 
 #define OMEGA_2S_UART_BUFFER_SIZE 16
 
+#ifndef DISPLAY_UART_PORT
+#define DISPLAY_UART_PORT "/dev/ttyS0"
+#endif
+
+#ifndef DISPLAY_UART_BAUD
+#define DISPLAY_UART_BAUD 115200
+#endif
+
 #define dbSerialPrintln(a)  pprint(a)
 #define dbSerialPrint(a)  pprint(a)
 

@@ -3,6 +3,7 @@
 */
 
 #include "Onion.h"
+#include "helpers.h"
 #include <cstdlib>
 #include <bits/stdc++.h>
 #include <unistd.h>
@@ -10,12 +11,12 @@
 #include <cstdio>
 #include <cstring>
 #include <ctime>
+#include <cstdint>
 #include <sys/time.h>
-#include "helpers.h"
 
 // ÿ
 
-extern unsigned long long GLOBAL_program_start_time;
+extern std::uint64_t program_start_time;
 
 void delay(unsigned int milliseconds)
 {
@@ -31,7 +32,7 @@ unsigned long millis()
 {
 	struct timeval tv;
 	gettimeofday(&tv, NULL);
-	return (static_cast<unsigned long long>(tv.tv_sec)*1000 + static_cast<unsigned long long>(tv.tv_usec)/1000) - GLOBAL_program_start_time;
+	return (static_cast<uint64_t>(tv.tv_sec)*1000 + static_cast<uint64_t>(tv.tv_usec)/1000) - program_start_time;
 }
 
 void yield(void)
@@ -112,9 +113,4 @@ void pprint(float stuff) { std::cout<<"pprint: Data type n/a"<< std::endl; }
 void pprint(double stuff) { std::cout<<"pprint: Data type n/a"<< std::endl; }
 void pprint(std::__cxx11::basic_string<char>::size_type) { std::cout<<"pprint: Data type n/a"<< std::endl; }
 
-/* Signal handler for SIGINT */
-void instant_shutdown(int signum)
-{
-	std::exit(EXIT_SUCCESS);
-}
 
